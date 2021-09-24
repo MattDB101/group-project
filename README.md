@@ -3,7 +3,7 @@
 
 
 Members:
-Naphatsakorn Khotsombat
-Matthew Byrne
-Yeap Heng Wei
-Szymon Pawlica
+Naphatsakorn Khotsombat,
+Matthew Byrne,
+Yeap Heng Wei,
+Szymon Pawlica.
