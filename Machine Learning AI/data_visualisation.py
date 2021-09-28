@@ -28,3 +28,7 @@ pyplot.show()
 # Histogram
 dataset.hist()
 pyplot.show()
+
+# Scatter plot matrix
+scatter_matrix(dataset)
+pyplot.show()
