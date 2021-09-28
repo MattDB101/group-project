@@ -1,8 +1,8 @@
+# Medi-Check
+
 <p align="center">
   <img src="https://github.com/MattDB101/group-project/blob/main/extras/logo/logo-mediCheck.png">
 </p>
-
-**Medi-Check**
 
 A societal transformation is taking place whereby healthcare professionals, and patients alike, are shifting from reactive
 to predictive health care management. Rather than waiting for health problems to be manifested as life threatening
