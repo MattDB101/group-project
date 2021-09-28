@@ -1,4 +1,7 @@
-# group-project
+<p align="center">
+  <img src="https://github.com/MattDB101/group-project/blob/main/extras/logo/logo-mediCheck.png">
+</p>
+
 3rd year group project.
 
 
