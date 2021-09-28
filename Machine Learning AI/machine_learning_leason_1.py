@@ -23,3 +23,6 @@ dataset = read_csv(url, names=names)
 
 # Shape
 print(dataset.shape)
+
+# Head
+print(dataset.head(20))
