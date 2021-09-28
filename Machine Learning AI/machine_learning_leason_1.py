@@ -29,3 +29,6 @@ print("\n", dataset.head(20))
 
 # Descriptions
 print("\n", dataset.describe())
+
+# Class distribution
+print("\n", dataset.groupby('class').size())
