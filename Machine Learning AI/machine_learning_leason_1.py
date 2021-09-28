@@ -22,7 +22,10 @@ names = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'class']
 dataset = read_csv(url, names=names)
 
 # Shape
-print(dataset.shape)
+print("\n", dataset.shape)
 
 # Head
-print(dataset.head(20))
+print("\n", dataset.head(20))
+
+# Descriptions
+print("\n", dataset.describe())
