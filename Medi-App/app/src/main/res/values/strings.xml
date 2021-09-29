@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MediApp</string>
+    <string name="home">HOME</string>
+    <string name="mediapp">MediApp</string>
+    <string name="press_me">Press Me!</string>
+    <string name="not_ready">Not Ready</string>
+    <string name="ready">Ready</string>
+</resources>
