@@ -52,6 +52,11 @@ the backend AI (Medi-predict).
 * Models, using publicly available datasets, which determine patient risk of heart disease, diabetes and Alzheimer’s
 * Reporting which displays the accuracy of each of these models
 
+**Medi-Coin** basic features should include:
+* Secure Blockchain record of patient data from the **Medi-Web** database, 
+* A limited supply of Medi-Coins, where some are retained by developers
+* Mining reward pay outs
+
 
 Members:
 Naphatsakorn Khotsombat,
