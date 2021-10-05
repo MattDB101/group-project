@@ -28,9 +28,10 @@
         <label for="password">Password</label>
       </div>
 
-      <button class="w-100 btn btn-lg btn-primary" type="submit" onclick="createUserWithName()">Sign up</button>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
     </form>
     <a href="/login" class="nav-link px-2 link-dark">Already have an account? Sign in.</a>
+    <p id="error" style="display: none; ">Test</p>
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
@@ -50,20 +51,14 @@
     };
 
     firebase.initializeApp(firebaseConfig);
-
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
 
-    document
-      .getElementById("signup")
-      .addEventListener("submit", (event) => {
+    document.getElementById("signup").addEventListener("submit", (event) => {
         event.preventDefault();
         const login = event.target.login.value;
         const password = event.target.password.value;
 
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(login, password)
-          .then(({ user }) => {
+        firebase.auth().createUserWithEmailAndPassword(login, password).then(({ user }) => {
             return user.getIdToken().then((idToken) => {
               return fetch("/sessionLogin", {
                 method: "POST",
@@ -75,12 +70,31 @@
                 body: JSON.stringify({ idToken }),
               });
             });
-          })
-          .then(() => {
+          }).then(() => {
             return firebase.auth().signOut();
-          })
-          .then(() => {
-            window.location.assign("/profile");
+          }).then(() => {
+            window.location.assign("/");
+          }).catch(err => {
+            if (err.code == "auth/invalid-email") {
+              document.getElementById("error").innerHTML = "Not a valid email.";
+              document.getElementById("error").style.display = "block";
+              console.log("Not an email!")
+            }
+            else if (err.code == "auth/email-already-exists") {
+              document.getElementById("error").innerHTML = "Email already in use.";
+              document.getElementById("error").style.display = "block";
+              console.log("Email already in use.")
+            }  
+            else if (err.code == "auth/weak-password") {
+              document.getElementById("error").innerHTML = "Enter a stronger password.";
+              document.getElementById("error").style.display = "block";
+              console.log("Weak password!")
+            } else {
+                document.getElementById("error").innerHTML = err.message;
+                document.getElementById("error").style.display = "block";
+                console.log("Unknown Error");
+              }  
+
           });
         return false;
       });

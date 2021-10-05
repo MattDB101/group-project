@@ -30,7 +30,7 @@ app.all("*", (req, res, next) => { // sets XSRF cookie for any request.
 app.get("/login", (req, res) => {
     const sessionCookie = req.cookies.session || "";
     admin.auth().verifySessionCookie(sessionCookie, true).then(() => { // using an error to check if the user is trying to log in whilst already logged in, probably not the best way to do this.
-        res.redirect("profile");
+        res.redirect("panel");
       })
       .catch((error) => {
         res.render("login");
@@ -42,21 +42,21 @@ app.get("/login", (req, res) => {
 app.get("/signup", (req, res) => {
     const sessionCookie = req.cookies.session || "";
     admin.auth().verifySessionCookie(sessionCookie, true).then(() => { // using an error to check if the user is trying to sign up whilst logged in
-        res.redirect("profile");
+        res.redirect("panel");
       })
       .catch((error) => {
         res.render("signup");
       });
 });
 
-// Profile
-app.get("/profile", function (req, res) {
+// Patient Panel
+app.get("/panel", function (req, res) {
     const sessionCookie = req.cookies.session || "";
     admin.auth().verifySessionCookie(sessionCookie, true).then(() => {
-        res.render("profile");
+        res.render("panel", {loggedIn: true});
       })
       .catch((error) => {
-        res.redirect("login");
+        res.redirect("login", {loggedIn: false});
       });
 });
 
@@ -71,7 +71,7 @@ app.get("/", (req, res) => {
       });
 });
 
-// Post Successful Login
+// Post Login
 app.post("/sessionLogin", (req, res) => {
     const idToken = req.body.idToken.toString();
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
@@ -87,12 +87,24 @@ app.post("/sessionLogin", (req, res) => {
                 res.status(401).send("UNAUTHORIZED REQUEST!");
             }
         );
+   
 });
 
 // Logout.
 app.get("/sessionLogout", (req, res) => {
     res.clearCookie("session");
     res.redirect("/");
+});
+
+// Index
+app.get("/pricing", (req, res) => {
+    const sessionCookie = req.cookies.session || "";
+    admin.auth().verifySessionCookie(sessionCookie, true).then(() => {
+        res.render("pricing", {loggedIn: true});
+      })
+      .catch((error) => {
+        res.render("pricing", {loggedIn: false});
+      });
 });
 
 app.listen(port, hostname, () => { // tell server to listen on set port on set host

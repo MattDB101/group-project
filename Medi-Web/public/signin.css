@@ -11,6 +11,11 @@ body {
   background-color: #f5f5f5;
 }
 
+#error {
+  color:red;
+  padding-top: 10px;
+}
+
 .form-signin {
   width: 100%;
   max-width: 330px;
@@ -37,3 +42,5 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+
