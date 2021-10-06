@@ -39,8 +39,8 @@
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
       Login with Google
     </button>
-
     <a href="/signup" class="nav-link px-2 link-dark">Don't have an account? Sign Up.</a>
+    <p id="error" style="display: none; ">Test</p>
     </main>
 
     <script>
@@ -57,20 +57,13 @@
       };
 
         firebase.initializeApp(firebaseConfig);
-
         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
-
-        document
-          .getElementById("login")
-          .addEventListener("submit", (event) => {
+        document.getElementById("login").addEventListener("submit", (event) => {
             event.preventDefault();
             const login = event.target.login.value;
             const password = event.target.password.value;
-
-            firebase
-              .auth()
-              .signInWithEmailAndPassword(login, password)
-              .then(({ user }) => {
+            
+            firebase.auth().signInWithEmailAndPassword(login, password).then(({ user }) => {
                 return user.getIdToken().then((idToken) => {
                   return fetch("/sessionLogin", {
                     method: "POST",
@@ -82,12 +75,31 @@
                     body: JSON.stringify({ idToken }),
                   });
                 });
-              })
-              .then(() => {
+              }).then(() => {
                 return firebase.auth().signOut();
-              })
-              .then(() => {
-                window.location.assign("/profile");
+              }).then(() => {
+                window.location.assign("/");
+              }).catch(err => {
+                if (err.code == "auth/user-not-found") {
+                  document.getElementById("error").innerHTML = "Email not linked to a user.";
+                  document.getElementById("error").style.display = "block";
+                  console.log("Wrong email!")
+                } 
+                else if (err.code == "auth/wrong-password") {
+                  document.getElementById("error").innerHTML = "Incorrect password.";
+                  document.getElementById("error").style.display = "block";
+                  console.log("Wrong email!")
+                }
+                else if (err.code == "auth/too-many-requests") {
+                  document.getElementById("error").innerHTML = "Too many requests, please try again later.";
+                  document.getElementById("error").style.display = "block";
+                  console.log("Too many requests!")
+                }
+                 else {
+                    document.getElementById("error").innerHTML = err.message;
+                    document.getElementById("error").style.display = "block";
+                    console.log("Unknown Error");
+                  }  
               });
             return false;
           });
