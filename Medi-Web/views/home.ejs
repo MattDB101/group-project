@@ -6,15 +6,14 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
   <link rel="shortcut icon" href="blue-cross-logo.png">
-  <title>MediWeb | Home</title>
-</head>
-
+  <title>MediWeb | Home</title> 
+</head> 
+    
 <body>
   <nav>
     <div class="container">
       <!--This div is the page header.-->
-      <header
-        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+      <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
           <img src="blue-cross-logo.png" width="65" alt="Logo" class="d-inline-block align-middle mr-2">
           <span class="">MediWeb</span>
@@ -29,9 +28,12 @@
         </ul>
 
         <div class="col-md-3 text-end">
-          <a href="/auth/login">
-            <button type="button" class="btn btn-outline-primary me-2">Sign in</button>
-          </a>
+
+          <% if (!locals.loggedIn) { %> <a href="/login"><button type="button"class="btn btn-outline-primary me-2 mx-3">Log In</button></a><% } %>
+          <% if (!locals.loggedIn) { %> <a href="/signup"><button type="button"class="btn btn-primary">Sign Up</button></a><% } %>
+          <% if (locals.loggedIn) { %> <a href="/panel"><button type="button"class="btn btn-primary mx-3">Patient Panel</button></a><% } %>
+          <% if (locals.loggedIn) { %> <a href="/sessionLogout"><button type="button"class="btn btn-outline-primary me-2">Log Out</button></a><% } %>
+          
         </div>
       </header>
     </div>
@@ -43,18 +45,63 @@
       <div class="p-5 mb-4 text-white bg-secondary rounded">
         <div class="container-fluid py-5">
           <h1 class="display-5 fw-bold">Welcome to MediWeb</h1>
-          <p class="col-md-8 fs-4">Please sign in to MediWeb to view your patient analytics.</p>
-          <a href="/auth/login">
-            <button class="btn btn-primary btn-lg" type="button">Sign in</button>
-          </a>
+
+          <% if (!locals.loggedIn) { %>
+            <p class="col-md-8 fs-4">Please sign in to MediWeb to view your patient analytics.</p>
+            <a href="/login">
+              <button class="btn btn-primary btn-lg" type="button">Log In</button>
+            </a>
+          <% } %>
+
+          <% if (locals.loggedIn) { %>
+            <p class="col-md-8 fs-4">Access the patient panel below to view your patient's analytics.</p>
+            <a href="/panel">
+              <button class="btn btn-primary btn-lg" type="button">Patient Panel</button>
+            </a>
+          <% } %>
+
         </div>
       </div>
     </div>
 
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Web-app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyD1lrk72djddDJAct0iJw0tlyFoRWb2Sn4",
+        authDomain: "medicheck-group-project-24b44.firebaseapp.com",
+        projectId: "medicheck-group-project-24b44",
+        storageBucket: "medicheck-group-project-24b44.appspot.com",
+        messagingSenderId: "844456570809",
+        appId: "1:844456570809:web:b66fc74f80c4cfd9ab9068",
+        measurementId: "G-VT2PKYZ32F"
+      };
+      
+      // Initialize Firebase
+      const firebaseApp = initializeApp(firebaseConfig);
+      const auth = getAuth(firebaseApp);
+      const db = getFirestore(firebaseApp);
+
+
+      onAuthStateChanged(auth, user => {
+        if(user != null) {
+          console.log("logged in!");
+        } else {
+          console.log("No user");
+        }
+      });
+
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
     </script>
-</body>
+    </body>
 
 </html>

@@ -41,8 +41,8 @@ the backend AI (Medi-predict).
 * Ratings & reviews. Capability of rating the quality of the app and leaving reviews of the app’s performance
 
 **Medi-Web** basic features should include:
-* Registration of medical professionals using email and/or social media login
-* Access Restrictions: professionals should only be able to see the details of their own patients
+* ~~Registration of medical professionals using email~~ and/or social media login
+* ~~Access Restrictions: professionals should only be able to see the details of their own patients~~
 * Medi-predict Interface allows professionals to view their patient risk profiles
 * User Profiling enables medical professionals to run reports establishing levels of risk for all categories
 * Aggregation of new patient data. Using new patient information, the administrator should have an option tocreate and export new datasets by extending those used by Medi-AI.
@@ -51,6 +51,11 @@ the backend AI (Medi-predict).
 * Simple API linking **Medi-Predict** backend with the **Medi-App** and **Medi-Web** applications
 * Models, using publicly available datasets, which determine patient risk of heart disease, diabetes and Alzheimer’s
 * Reporting which displays the accuracy of each of these models
+
+**Medi-Coin** basic features should include:
+* Secure Blockchain record of patient data from the **Medi-Web** database, 
+* A limited supply of Medi-Coins, where some are retained by developers
+* Mining reward pay outs
 
 
 Members:
