@@ -1,4 +1,5 @@
-from pandas import read_csv, concat
+# Load libraries
+from pandas import read_csv
 from pandas.plotting import scatter_matrix
 from matplotlib import pyplot
 from sklearn.model_selection import train_test_split
@@ -15,11 +16,9 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 
 
-names = ['age', 'sex', 'cp', 'trestbps', 'chol',
-              'fbs', 'restecg', 'thalach', 'exang',
-              'oldpeak', 'slope', 'ca', 'thal', 'target']
-
-dataset = read_csv('extras/cleveland.csv', names=names)
+# Load dataset
+names = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI']
+dataset = read_csv("extras/diabetes.csv", names=names)
 
 # Split-out validation dataset
 array = dataset.values

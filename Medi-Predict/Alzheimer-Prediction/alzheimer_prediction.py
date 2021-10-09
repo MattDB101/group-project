@@ -15,17 +15,24 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 
 
-names = ['age', 'sex', 'cp', 'trestbps', 'chol',
-              'fbs', 'restecg', 'thalach', 'exang',
-              'oldpeak', 'slope', 'ca', 'thal', 'target']
+# Load dataset
+data_cross = read_csv("extras/oasis_cross-sectional.csv")
+data_long = read_csv("extras/oasis_longitudinal.csv")
 
-dataset = read_csv('extras/cleveland.csv', names=names)
+# Removing unnecessary columns
+data_cross.drop(columns=['ID', 'Delay'], inplace=True)
+data_long = data_long.rename(columns={'EDUC':'Educ'})
+data_long.drop(columns=['Subject ID', 'MRI ID', 'Group', 'Visit', 'MR Delay'], inplace=True)
+
+# Merge both datasets
+dataset = concat([data_cross, data_long])
+dataset.head()
 
 # Split-out validation dataset
 array = dataset.values
 X = array[:, 0:4]
 y = array[:, 4]
-X_train, X_validation, Y_train, Y_validation = train_test_split(X, y, test_size=0.20, random_state=1)
+X_train, X_validation, Y_train, Y_validation = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Make predictions on validation dataset
 model = SVC(gamma='auto')
