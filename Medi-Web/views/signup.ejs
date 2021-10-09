@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <link rel="shortcut icon" href="blue-cross-logo.png">
+  <link rel="stylesheet" href="../signin.css">
+  <title>MediWeb | Sign Up</title>
+</head>
+
+<body class="text-center">
+  <main class="form-signin">
+    <form id="signup">
+      <a href="/">
+        <img class="mb-4" src="../blue-cross-logo.png" alt="" width="72" height="57">
+      </a>
+      <h1 class="h4 mb-3 fw-normal">Sign up.</h1>
+
+      <div class="form-floating">
+        <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com">
+        <label for="email">Email address</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+        <label for="password">Password</label>
+      </div>
+
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+    </form>
+    <a href="/login" class="nav-link px-2 link-dark">Already have an account? Sign in.</a>
+    <p id="error" style="display: none; ">Test</p>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-firestore.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD1lrk72djddDJAct0iJw0tlyFoRWb2Sn4",
+      authDomain: "medicheck-group-project-24b44.firebaseapp.com",
+      projectId: "medicheck-group-project-24b44",
+      storageBucket: "medicheck-group-project-24b44.appspot.com",
+      messagingSenderId: "844456570809",
+      appId: "1:844456570809:web:b66fc74f80c4cfd9ab9068",
+      measurementId: "G-VT2PKYZ32F"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+  <script type="text/javascript" src="scripts/auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+  </script>
+  </main>
+</body>
+
+</html>

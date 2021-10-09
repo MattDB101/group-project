@@ -5,4 +5,12 @@
     <string name="press_me">Press Me!</string>
     <string name="not_ready">Not Ready</string>
     <string name="ready">Ready</string>
+    <string name="medi_app">Medi-App</string>
+    <string name="mediapp_logo">mediapp_logo</string>
+    <string name="sign_in">sign in</string>
+    <string name="register">register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">login</string>
+    <string name="back">back</string>
 </resources>
