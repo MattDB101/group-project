@@ -9,9 +9,7 @@
   <link rel="shortcut icon" href="blue-cross-logo.png">
   <link rel="stylesheet" href="../signin.css">
   <title>MediWeb | Sign in</title>
-  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer></script>
+
 </head>
 
 <body class="text-center">
@@ -43,6 +41,9 @@
     <p id="error" style="display: none; ">Test</p>
   </main>
 
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-firestore.js"></script>
   <script>
     window.addEventListener("DOMContentLoaded", () => {
       
@@ -57,7 +58,7 @@
       };
 
       firebase.initializeApp(firebaseConfig);
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+      
       document.getElementById("login").addEventListener("submit", (event) => {
         event.preventDefault();
         const email = event.target.email.value;
@@ -112,8 +113,7 @@
       });
     });
   </script>
-
-
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
   </script>

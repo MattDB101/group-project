@@ -33,7 +33,7 @@ document.getElementById("signup").addEventListener("submit", (event) => {
     return false;
 });
 
-const sendVerificationEmail = () => {
+const sendVerificationEmail = ()=> {
     auth.currentUser.sendEmailVerification() // Built in firebase function responsible for sending the verification email
         .then(() => {
             console.log('Verification Email Sent Successfully !');
