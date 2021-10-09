@@ -49,6 +49,25 @@
     <p>This page is private</p>
     <a href="/sessionLogout">Log out</a>
   </main>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD1lrk72djddDJAct0iJw0tlyFoRWb2Sn4",
+      authDomain: "medicheck-group-project-24b44.firebaseapp.com",
+      projectId: "medicheck-group-project-24b44",
+      storageBucket: "medicheck-group-project-24b44.appspot.com",
+      messagingSenderId: "844456570809",
+      appId: "1:844456570809:web:b66fc74f80c4cfd9ab9068",
+      measurementId: "G-VT2PKYZ32F"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+
+  </script>
 </body>
 
 </html>
