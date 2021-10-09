@@ -46,7 +46,6 @@
   <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-firestore.js"></script>
   <script>
     window.addEventListener("DOMContentLoaded", () => {
-      
       const firebaseConfig = {
         apiKey: "AIzaSyD1lrk72djddDJAct0iJw0tlyFoRWb2Sn4",
         authDomain: "medicheck-group-project-24b44.firebaseapp.com",
@@ -56,9 +55,7 @@
         appId: "1:844456570809:web:b66fc74f80c4cfd9ab9068",
         measurementId: "G-VT2PKYZ32F"
       };
-
       firebase.initializeApp(firebaseConfig);
-      
       document.getElementById("login").addEventListener("submit", (event) => {
         event.preventDefault();
         const email = event.target.email.value;
@@ -90,7 +87,6 @@
             console.log("No user found")
           }
         }).catch(err => {
-
           if (err.code == "auth/user-not-found") {
             errMsg.innerHTML = "Email not linked to a user.";
             errMsg.style.display = "block";

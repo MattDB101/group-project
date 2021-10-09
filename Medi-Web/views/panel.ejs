@@ -37,7 +37,8 @@
               Up</button></a><% } %>
           <% if (locals.loggedIn) { %> <a href="/panel"><button type="button" class="btn btn-primary mx-3">Patient
               Panel</button></a><% } %>
-          <% if (locals.loggedIn) { %> <a href="/sessionLogout"><button id="logout" type="button" onclick="logOut()" class="btn btn-outline-primary me-2">Log Out</button></a><% } %>
+          <% if (locals.loggedIn) { %> <a href="/sessionLogout"><button id="logout" type="button" onclick="logOut()"
+              class="btn btn-outline-primary me-2">Log Out</button></a><% } %>
 
         </div>
       </header>
@@ -51,37 +52,30 @@
   <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-firestore.js"></script>
   <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyD1lrk72djddDJAct0iJw0tlyFoRWb2Sn4",
-        authDomain: "medicheck-group-project-24b44.firebaseapp.com",
-        projectId: "medicheck-group-project-24b44",
-        storageBucket: "medicheck-group-project-24b44.appspot.com",
-        messagingSenderId: "844456570809",
-        appId: "1:844456570809:web:b66fc74f80c4cfd9ab9068",
-        measurementId: "G-VT2PKYZ32F"
-      };
-        
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-  
-        firebase.auth().onAuthStateChanged(user => {
-          if (user) {
-            const { currentUser } = firebase.auth();
-            console.log('Currently logged in user', currentUser);
-          } else {
-            console.log("No user");
-          }
-        })
-  
-        function logOut()  {
-        firebase.auth().signOut().then(() => {
-          console.log("User signed out.");
-        })
+    const firebaseConfig = {
+      apiKey: "AIzaSyD1lrk72djddDJAct0iJw0tlyFoRWb2Sn4",
+      authDomain: "medicheck-group-project-24b44.firebaseapp.com",
+      projectId: "medicheck-group-project-24b44",
+      storageBucket: "medicheck-group-project-24b44.appspot.com",
+      messagingSenderId: "844456570809",
+      appId: "1:844456570809:web:b66fc74f80c4cfd9ab9068",
+      measurementId: "G-VT2PKYZ32F"
+    };
+    firebase.initializeApp(firebaseConfig); // Initialize Firebase
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        const {
+          currentUser
+        } = firebase.auth();
+        console.log('Currently logged in user', currentUser);
+      } else {
+        console.log("No user");
       }
+    })
   </script>
+  <script type="text/javascript" src="scripts/auth.js"></script>
 </body>
 
 </html>
