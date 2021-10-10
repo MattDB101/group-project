@@ -1,4 +1,6 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler as ss
 from sklearn.svm import SVC
@@ -16,6 +18,17 @@ df['target'] = df.target.map({0: 0, 1: 1, 2: 1, 3: 1, 4: 1})
 df['sex'] = df.sex.map({0: 'female', 1: 'male'})
 df['thal'] = df.thal.fillna(df.thal.mean())
 df['ca'] = df.ca.fillna(df.ca.mean())
+
+# distribution of target vs age
+sns.set_context("paper", font_scale=2, rc={"font.size": 20, "axes.titlesize": 25, "axes.labelsize": 20})
+sns.catplot(kind='count', data=df, x='age', hue='target', order=df['age'].sort_values().unique())
+plt.title('Variation of Age for each target class')
+plt.show()
+
+# barplot of age vs sex with hue = target
+sns.catplot(kind='bar', data=df, y='age', x='sex', hue='target')
+plt.title('Distribution of age vs sex with the target class')
+plt.show()
 
 
 df['sex'] = df.sex.map({'female': 0, 'male': 1})
