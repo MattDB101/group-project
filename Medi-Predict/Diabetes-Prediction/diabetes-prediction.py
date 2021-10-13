@@ -1,36 +1,52 @@
 # Load libraries
-from pandas import read_csv
-from pandas.plotting import scatter_matrix
-from matplotlib import pyplot
+import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.naive_bayes import GaussianNB
-from sklearn.svm import SVC
+from sklearn.preprocessing import StandardScaler
+import keras
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.callbacks import ModelCheckpoint
 
 
 # Load dataset
+dataset = pd.read_csv("extras/diabetes.csv")
+dataset.head()
+
+# Cleaning Data
+dataset.duplicated().sum()
+dataset.drop_duplicates(inplace=True)
+
 names = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI']
-dataset = read_csv("extras/diabetes.csv", names=names)
 
-# Split-out validation dataset
-array = dataset.values
-X = array[:, 0:4]
-y = array[:, 4]
-X_train, X_validation, Y_train, Y_validation = train_test_split(X, y, test_size=0.20, random_state=1)
+for col in names:
+    dataset[col].replace(0, np.NaN, inplace=True)
 
-# Make predictions on validation dataset
-model = SVC(gamma='auto')
-model.fit(X_train, Y_train)
-predictions = model.predict(X_validation)
-# Evaluate predictions
-print(accuracy_score(Y_validation, predictions))
-print(confusion_matrix(Y_validation, predictions))
-print(classification_report(Y_validation, predictions))
+dataset.dropna(inplace=True)
+
+X = dataset.drop('Outcome', axis=1)
+X = StandardScaler().fit_transform(X)
+y = dataset['Outcome']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=0)
+
+model = Sequential()
+model.add(Dense(8, activation = 'relu', input_shape = X_train[0].shape))
+
+model.add(Dense(8, activation='relu'))
+
+model.add(Dense(4, activation='relu'))
+
+model.add(Dense(1, activation='sigmoid'))
+model.summary()
+
+opt = keras.optimizers.Adam(learning_rate=0.0001)
+model.compile(optimizer= opt ,loss='binary_crossentropy',metrics=['acc'])
+
+checkpointer = ModelCheckpoint('diabetes.h5', monitor='val_acc', mode='max', verbose=2, save_best_only=True)
+history=model.fit(X_train, y_train, batch_size=16, epochs=350, validation_data=(X_test, y_test), callbacks=[checkpointer])
+
+present_model = keras.models.load_model('diabetes.h5')
+present_model.summary()
+
+print("Accuracy of our model on test data : ", present_model.evaluate(X_test,y_test)[1]*100 , "%")
