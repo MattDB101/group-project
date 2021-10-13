@@ -57,7 +57,6 @@ y_pred_train = model.predict(X_train)
 cm_train = confusion_matrix(y_pred_train, y_train)
 predictions = model.predict(X_validation)
 
-print()
 print('Accuracy for training set for svm = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
 print('Accuracy for test set for svm = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(Y_validation)))
 print('\n' + classification_report(Y_validation, predictions))
