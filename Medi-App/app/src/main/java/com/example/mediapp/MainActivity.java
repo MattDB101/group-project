@@ -14,8 +14,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button signup_button = findViewById(R.id.button);
-        signup_button.setOnClickListener(new View.OnClickListener(){
+        Button signin_button = findViewById(R.id.button);
+        signin_button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 System.out.println("Button Clicked");
 

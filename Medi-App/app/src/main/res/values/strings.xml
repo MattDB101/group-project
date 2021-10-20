@@ -13,4 +13,5 @@
     <string name="password">Password</string>
     <string name="login">login</string>
     <string name="back">back</string>
+    <string name="attempt_3">Attempt: 3</string>
 </resources>
