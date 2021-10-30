@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "844456570809",
+    "project_id": "medicheck-group-project-24b44",
+    "storage_bucket": "medicheck-group-project-24b44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844456570809:android:6e0b64737604b491ab9068",
+        "android_client_info": {
+          "package_name": "com.example.mediapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844456570809-7d1t3s24rugna9rpqbghdthj6g1k3huo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJVaf_77E0fzuJH_kMSmECucYKYwsEFyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844456570809-7d1t3s24rugna9rpqbghdthj6g1k3huo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
