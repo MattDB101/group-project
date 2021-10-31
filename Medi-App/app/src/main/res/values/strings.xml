@@ -14,4 +14,7 @@
     <string name="login">login</string>
     <string name="back">back</string>
     <string name="attempt_3">Attempt: 3</string>
+    <string name="sign_up">sign up</string>
+    <string name="sign_up_title">Sign Up</string>
+    <string name="login_title">Login</string>
 </resources>

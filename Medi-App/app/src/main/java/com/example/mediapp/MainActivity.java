@@ -19,7 +19,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 System.out.println("Button Clicked");
 
-                Intent activity2Intent = new Intent(getApplicationContext(), login.class);
+                Intent activityIntent = new Intent(getApplicationContext(), login.class);
+                startActivity(activityIntent);
+            }
+        });
+
+        Button signup_button = findViewById(R.id.button2);
+        signup_button.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                System.out.println("Button Clicked");
+
+                Intent activity2Intent = new Intent(getApplicationContext(), signup1.class);
                 startActivity(activity2Intent);
             }
         });
