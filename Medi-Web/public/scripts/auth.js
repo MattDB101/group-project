@@ -9,6 +9,9 @@ document.getElementById("signup").addEventListener("submit", (event) => {
         sendVerificationEmail();
     }).then(() => {
         alert("Check your email to confirm your account before signing in.")
+        firebase.auth().signOut().then(() => {
+            console.log("User signed out.");
+        })
         window.location.assign("/");
     }).catch(err => {
         var errMsg = document.getElementById("error");
@@ -21,7 +24,7 @@ document.getElementById("signup").addEventListener("submit", (event) => {
             errMsg.style.display = "block";
             console.log("Email already in use.")
         } else if (err.code == "auth/weak-password") {
-            errMsg.innerHTML = "Enter a stronger password.";
+            errMsg.innerHTML = "Password must be greater than 6 characters";
             errMsg.style.display = "block";
             console.log("Weak password!")
         } else {
@@ -30,6 +33,7 @@ document.getElementById("signup").addEventListener("submit", (event) => {
             console.log("Unknown Error");
         }
     });
+
     return false;
 });
 
@@ -42,10 +46,4 @@ const sendVerificationEmail = () => {
         .catch(error => {
             console.error(error);
         })
-}
-
-function logOut() {
-    firebase.auth().signOut().then(() => {
-        console.log("User signed out.");
-    })
 }

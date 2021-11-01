@@ -34,14 +34,14 @@
 
         <div class="col-md-3 text-end">
 
-          <% if (!locals.loggedIn) { %> <a href="/login"><button type="button"
-              class="btn btn-outline-primary me-2 mx-3">Log In</button></a><% } %>
-          <% if (!locals.loggedIn) { %> <a href="/signup"><button type="button" class="btn btn-primary">Sign
-              Up</button></a><% } %>
-          <% if (locals.loggedIn) { %> <a href="/panel"><button type="button" class="btn btn-primary mx-3">Patient
-              Panel</button></a><% } %>
-          <% if (locals.loggedIn) { %> <a href="/sessionLogout"><button id="logout" type="button" onclick="logOut()"
-              class="btn btn-outline-primary me-2">Log Out</button></a><% } %>
+          <a href="/login"><button id="login" style="display: inline; " type="button"
+              class="btn btn-outline-primary me-2 mx-3">Log In</button></a>
+          <a href="/signup"><button id="signup" style="display: inline; " type="button" class="btn btn-primary">Sign
+              Up</button></a>
+          <a href="/panel"><button id="panel" style="display: none;" type="button" class="btn btn-primary mx-3">Patient
+              Panel</button></a>
+          <a href="/sessionLogout"><button id="logout" style="display: none;" type="button" onclick="logOut()"
+              class="btn btn-outline-primary me-2">Log Out</button></a>
 
         </div>
       </header>
@@ -72,9 +72,9 @@
         </div>
       </div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
     <script>
       const firebaseConfig = {
         apiKey: "AIzaSyD1lrk72djddDJAct0iJw0tlyFoRWb2Sn4",
@@ -94,13 +94,19 @@
             currentUser
           } = firebase.auth();
           console.log('Currently logged in user', currentUser);
+          document.getElementById("panel").style.display =
+            "inline"; // Using cookies OR plain JS to render buttons depending on auth state, cookie example used in the jumbotron above.
+          document.getElementById("logout").style.display = "inline";
+          document.getElementById("login").style.display = "none";
+          document.getElementById("signup").style.display = "none";
         } else {
           console.log("No user");
         }
       })
+
     </script>
-    <script type="text/javascript" src="scripts/auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
     </script>
