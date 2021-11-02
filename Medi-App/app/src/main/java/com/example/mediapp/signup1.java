@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class signup1 extends AppCompatActivity {
 
     Button back_button, signup_button;
+    EditText username, password;
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
 
@@ -38,11 +40,15 @@ public class signup1 extends AppCompatActivity {
             }
         });
 
+        username = (EditText)findViewById(R.id.editTextTextPersonName);
+        password = (EditText)findViewById(R.id.editTextTextPassword);
+
         signup_button = findViewById(R.id.button3);
         signup_button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                System.out.println("Login Button Clicked");
-
+                System.out.println("Sign Up Button Clicked");
+                createAccount(username.getText().toString(), password.getText().toString());
+                sendVerificationEmail();
             }
         });
     }

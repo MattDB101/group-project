@@ -55,6 +55,8 @@ public class login extends AppCompatActivity {
         login_button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 System.out.println("Login Button Clicked");
+                signIn(username.getText().toString(), password.getText().toString());
+                sendVerificationEmail();
 
                 /*if(username.getText().toString().equals("admin") && password.getText().toString().equals("admin")){
                     Toast.makeText(getApplicationContext(), "Welcome, admin.", Toast.LENGTH_SHORT).show();
