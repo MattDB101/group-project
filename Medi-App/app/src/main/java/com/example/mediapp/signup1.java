@@ -68,12 +68,13 @@ public class signup1 extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         Log.d(TAG, "createUserWithEmail:success");
+                        Toast.makeText(signup1.this, "Account created, check verification email", Toast.LENGTH_SHORT).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);
                     }
                     else{
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(signup1.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(signup1.this, "User account created", Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
             }
