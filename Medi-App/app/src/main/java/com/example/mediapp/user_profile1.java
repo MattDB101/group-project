@@ -24,7 +24,11 @@ public class user_profile1 extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        welcomeText.setText(String.format("Welcome, %s", user));
+        welcomeText = (TextView)findViewById(R.id.textView6);
+        if(user != null){
+            welcomeText.setText("Welcome "+ user.getEmail());
+        }
+
 
         signOut = findViewById(R.id.button5);
         signOut.setOnClickListener(new View.OnClickListener(){

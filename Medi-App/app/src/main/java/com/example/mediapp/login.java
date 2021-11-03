@@ -96,16 +96,29 @@ public class login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            Toast.makeText(login.this, "Account created.",
-                                    Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+
+                            Intent userHome = new Intent(login.this, user_profile1.class);
+                            startActivity(userHome);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
+
+                            info_text.setVisibility(View.VISIBLE);
+                            info_text.setBackgroundColor(Color.CYAN);
+                            counter--;
+                            info_text.setText("Attempts: "+Integer.toString(counter));
+
+                            if(counter == 0){
+                                login_button.setEnabled(false);
+                                System.out.println("Too many incorrect login, please check login details");
+                                Toast.makeText(login.this, "Too many incorrect login, please check login details",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
