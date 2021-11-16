@@ -43,4 +43,16 @@ body {
   border-top-right-radius: 0;
 }
 
+.detailsForm{
+  margin: auto;
+  width: 50%;
+}
+
+small{
+  color:red;
+}
+
+label{
+  padding-top: 2%;
+}
 
