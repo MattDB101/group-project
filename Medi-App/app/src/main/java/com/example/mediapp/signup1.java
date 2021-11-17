@@ -71,6 +71,9 @@ public class signup1 extends AppCompatActivity {
                         Toast.makeText(signup1.this, "Account created, check verification email", Toast.LENGTH_SHORT).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);
+
+                        //Intent signup2Intent = new Intent(getApplicationContext(), signup2.class);
+                        //startActivity(signup2Intent);
                     }
                     else{
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
