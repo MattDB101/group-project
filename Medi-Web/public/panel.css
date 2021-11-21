@@ -1,3 +1,6 @@
-ol{
-    margin: auto;
-}
+#error {
+    color:red;
+    padding-top: 10px;
+    margin-left: auto;
+  }
+

@@ -40,30 +40,48 @@
   <main>
     <h1 id="welcome" class="display-6 text-center pt-5"></h1>
 
-    <ol class="list-group pt-5" style="width: 30%;">
+    <div class="row row-cols-1 row-cols-md-2" style="padding: 5% 20%; margin: auto;">
 
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div id="name" class="fw-bold" style="display: inline;">Name: </div>
-      </li>
+      <div class="col text-center pb-5">
+        <span class="fs-4">Input patient's email to add them to your panel</span>
+        <form id="addPatient"class="pt-4">
+          <div class="form-floating">
+            <input type="text" name="patientEmail" class="form-control" id="patientEmail"
+              placeholder="patient@email.com">
+            <label for="patientEmail">Patient Email</label>
+          </div>
+          <button class="w-100 btn btn-primary text-center " type="submit">Add patient</button>
+        </form>
+        <p id="error" style="display: none;">Test</p>
+      </div>
 
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div id="role" class="fw-bold">Role: </div>
-      </li>
+      <div class="col pb-5" id="docDetails">
+        <ol class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div id="name" class="fw-bold" style="display: inline;">Name: </div>
+          </li>
 
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div id="phone" class="fw-bold">Phone Number: </div>
-      </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div id="role" class="fw-bold">Role: </div>
+          </li>
 
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div id="address" class="fw-bold">Address: </div>
-      </li>
-      <a href="/details" class="list-group-item list-group-item-action active text-center" aria-current="true">Change details</a>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div id="phone" class="fw-bold">Phone Number: </div>
+          </li>
 
-    </ol>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div id="address" class="fw-bold">Address: </div>
+            </div>
+          </li>
+          <a href="/details" class="list-group-item list-group-item-action active text-center"
+            aria-current="true">Change
+            details</a>
+        </ol>
+      </div>
 
 
   </main>

@@ -35,7 +35,6 @@ firebase.auth().onAuthStateChanged(user => {
 
 form.addEventListener("submit", (event) => {
     event.preventDefault();
-
     const {
         currentUser
     } = firebase.auth();
@@ -48,10 +47,8 @@ form.addEventListener("submit", (event) => {
                 console.error("Error removing document: ", error);
             });
         });
-    })
-    
-    setTimeout(function() {
-        db.collection("doctors").add({
+    }).then(() => {
+        db.collection("doctors").doc(currentUser.email).set({
             email: currentUser.email,
             fname: form.fname.value,
             lname: form.lname.value,
@@ -63,12 +60,9 @@ form.addEventListener("submit", (event) => {
             region: form.region.value,
             zip: form.zip.value,
             country: form.country.value,
-    
+
         })
         console.log("Document successfully added!");
         window.location.replace("/panel")
-    }, (3 * 100));
-
-    
-
+    })
 })
