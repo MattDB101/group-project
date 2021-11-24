@@ -72,8 +72,8 @@ public class signup1 extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);
 
-                        //Intent signup2Intent = new Intent(getApplicationContext(), signup2.class);
-                        //startActivity(signup2Intent);
+                        /*Intent signup2Intent = new Intent(getApplicationContext(), signup2.class);
+                        startActivity(signup2Intent);*/
                     }
                     else{
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());

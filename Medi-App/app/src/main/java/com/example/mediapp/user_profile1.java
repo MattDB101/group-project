@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class user_profile1 extends AppCompatActivity {
 
     TextView welcomeText;
-    Button signOut;
+    Button signOut, editDetail, feedback;
     private FirebaseAuth mAuth;
 
     @Override
@@ -26,9 +26,8 @@ public class user_profile1 extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         welcomeText = (TextView)findViewById(R.id.textView6);
         if(user != null){
-            welcomeText.setText("Welcome "+ user.getEmail());
+            welcomeText.setText(String.format("Welcome, %s", user.getEmail()));
         }
-
 
         signOut = findViewById(R.id.button5);
         signOut.setOnClickListener(new View.OnClickListener(){
@@ -38,6 +37,26 @@ public class user_profile1 extends AppCompatActivity {
                 Intent backToHomeIntent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(backToHomeIntent);
                 FirebaseAuth.getInstance().signOut();
+            }
+        });
+
+        editDetail = findViewById(R.id.button6);
+        editDetail.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                System.out.println("Edit Detail Button Clicked");
+
+                Intent editDetailIntent = new Intent(getApplicationContext(), signup2.class);
+                startActivity(editDetailIntent);
+            }
+        });
+
+        feedback = findViewById(R.id.button7);
+        feedback.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                System.out.println("Feedback Button Clicked");
+
+                Intent feedbackIntent = new Intent(getApplicationContext(), rating.class);
+                startActivity(feedbackIntent);
             }
         });
 

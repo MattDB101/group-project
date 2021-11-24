@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MediApp">
         <activity
+            android:name=".rating"
+            android:exported="false" />
+        <activity
             android:name=".signup2"
             android:exported="false" />
         <activity
