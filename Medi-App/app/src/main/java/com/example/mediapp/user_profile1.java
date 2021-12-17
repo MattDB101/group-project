@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class user_profile1 extends AppCompatActivity {
 
     TextView welcomeText;
-    Button signOut, editDetail, feedback;
+    Button signOut, editDetail, feedback, mediAI;
     private FirebaseAuth mAuth;
 
     @Override
@@ -56,6 +56,16 @@ public class user_profile1 extends AppCompatActivity {
                 System.out.println("Feedback Button Clicked");
 
                 Intent feedbackIntent = new Intent(getApplicationContext(), rating.class);
+                startActivity(feedbackIntent);
+            }
+        });
+
+        mediAI = findViewById(R.id.button9);
+        mediAI.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                System.out.println("Feedback Button Clicked");
+
+                Intent feedbackIntent = new Intent(getApplicationContext(), medi_AI_page.class);
                 startActivity(feedbackIntent);
             }
         });
