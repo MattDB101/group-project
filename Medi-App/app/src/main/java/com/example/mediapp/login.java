@@ -55,6 +55,8 @@ public class login extends AppCompatActivity {
         login_button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 System.out.println("Login Button Clicked");
+                signIn(username.getText().toString(), password.getText().toString());
+                sendVerificationEmail();
 
                 /*if(username.getText().toString().equals("admin") && password.getText().toString().equals("admin")){
                     Toast.makeText(getApplicationContext(), "Welcome, admin.", Toast.LENGTH_SHORT).show();
@@ -96,12 +98,27 @@ public class login extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+
+                            Intent userHome = new Intent(login.this, user_profile1.class);
+                            startActivity(userHome);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
+
+                            info_text.setVisibility(View.VISIBLE);
+                            info_text.setBackgroundColor(Color.CYAN);
+                            counter--;
+                            info_text.setText("Attempts: "+Integer.toString(counter));
+
+                            if(counter == 0){
+                                login_button.setEnabled(false);
+                                System.out.println("Too many incorrect login, please check login details");
+                                Toast.makeText(login.this, "Too many incorrect login, please check login details",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

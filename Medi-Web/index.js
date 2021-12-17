@@ -69,6 +69,20 @@ app.get("/panel", function (req, res) {
     });
 });
 
+
+// GP Details Panel
+app.get("/details", function (req, res) {
+  const sessionCookie = req.cookies.session || "";
+  admin.auth().verifySessionCookie(sessionCookie, true).then(() => {
+      res.render("details", {
+        loggedIn: true
+      });
+    })
+    .catch((error) => {
+      res.redirect("login");
+    });
+});
+
 // Index
 app.get("/", (req, res) => {
   const sessionCookie = req.cookies.session || "";

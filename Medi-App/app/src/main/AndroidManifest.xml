@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mediapp">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MediApp">
+        <activity
+            android:name=".medi_AI_page"
+            android:exported="false" />
+        <activity
+            android:name=".rating"
+            android:exported="false" />
+        <activity
+            android:name=".signup2"
+            android:exported="false" />
+        <activity
+            android:name=".user_profile1"
+            android:exported="false" />
         <activity
             android:name=".signup1"
             android:exported="false" />

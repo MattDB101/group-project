@@ -50,6 +50,8 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+    db.settings({timestampsInSnapshots: true})
+    
   </script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
   <script type="text/javascript" src="/scripts/auth.js"></script>

@@ -120,6 +120,7 @@
         firebase.initializeApp(firebaseConfig); // Initialize Firebase
         const auth = firebase.auth();
         const db = firebase.firestore();
+        db.settings({timestampsInSnapshots: true})
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>

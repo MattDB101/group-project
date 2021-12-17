@@ -88,6 +88,8 @@
       firebase.initializeApp(firebaseConfig); // Initialize Firebase
       const auth = firebase.auth();
       const db = firebase.firestore();
+      db.settings({timestampsInSnapshots: true})
+      
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           const {
