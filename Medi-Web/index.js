@@ -33,6 +33,12 @@ app.get("/scripts/auth.js", function (req, res) {
   res.sendFile(path.join(__dirname, 'scripts', 'auth.js'));
 });
 
+
+app.use(express.static("./public"));
+app.get("/scripts/web3.min.js", function (req, res) {
+  res.sendFile(path.join(__dirname, 'scripts', 'web3.min.js'));
+});
+
 // Login page
 app.get("/login", (req, res) => {
   const sessionCookie = req.cookies.session || "";
