@@ -115,12 +115,12 @@ document.getElementById("addPatient").addEventListener("submit", (event) => {
 
     db.collection('doctors').doc(currentUser.email).collection('patients').where("email", "==", patEmail).get().then(snapshot => {
         snapshot.docs.forEach(doc => {
-        doc.ref.delete()
-        errMsg.innerHTML = "You already own this patient";
-        errMsg.style.display = "block";
+            doc.ref.delete()
+            errMsg.innerHTML = "You already own this patient";
+            errMsg.style.display = "block";
         })
     }).then(() => {
-
+        let patFname, patLName, patTelephone, patAddress1, patAddress2, patCity, patRegion, patZip, patCountry, patWallet
         db.collection("patient").where("email", "==", patEmail).get().then(snapshot => {
             const doc = snapshot.docs[0];
             patFname = doc.data().fname;
@@ -132,6 +132,7 @@ document.getElementById("addPatient").addEventListener("submit", (event) => {
             patRegion = doc.data().region;
             patZip = doc.data().zip;
             patCountry = doc.data().country;
+            patWallet = doc.data().wallet;
         }).then(() => {
             (db.collection('doctors').doc(currentUser.email).collection('patients').add({
                 fname: patFname,
@@ -145,7 +146,20 @@ document.getElementById("addPatient").addEventListener("submit", (event) => {
                 zip: patZip,
                 country: patCountry
             }))
-            location.reload()
+            let name = patFname + " " + patLName
+            let addr = patAddress1 + " " + patAddress2 + " " + patCity + " " + patRegion + " " + patZip + " " + patCountry
+            let email = patEmail
+            let tel = patTelephone
+            let wallet = patWallet
+            console.log("Pushing to blockchain: ")
+            console.log(name)
+            console.log(addr)
+            console.log(email)
+            console.log(tel)
+            console.log(wallet)
+
+            App.createPatient(name, addr, email, tel, wallet);
+            //location.reload()
         }).catch(err => {
             var errMsg = document.getElementById("error");
             errMsg.innerHTML = "Email not linked to a user.";
@@ -154,3 +168,37 @@ document.getElementById("addPatient").addEventListener("submit", (event) => {
         })
     })
 });
+
+function exportCSV() {
+    const {
+        currentUser
+    } = firebase.auth();
+    const data = [];
+
+
+    db.collection('doctors').doc(currentUser.email).collection('patients').get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+
+            fName = doc.data().fname
+            lName = doc.data().lname
+            add1 = doc.data().add1
+            add2 = doc.data().add2
+            city = doc.data().city
+            email = doc.data().email;
+            tel = doc.data().tel;
+            console.log(tel)
+            arr = [fName, lName, add1, add2, city, email, tel]
+            data.push(arr);
+        });
+    }).then(() => {
+    console.log(data[0])
+    let csvContent = "data:text/csv;charset=utf-8," +
+        data.map(e => e.join(",")).join("\n");
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "patientData.csv");
+    document.body.appendChild(link);
+    link.click();
+    });
+}

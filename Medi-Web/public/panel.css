@@ -5,12 +5,20 @@
 }
 
 
-.content {
+.patList {
   background: #fff;
   max-width: 960px;
   margin: 30px auto;
   padding: 20px 30px;
-  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1)
+  border: 1px solid rgb(201, 201, 201)
+}
+
+.blPatList {
+  background: #fff;
+  max-width: 960px;
+  margin: 30px auto;
+  padding: 20px 30px;
+  border: 1px solid rgb(201, 201, 201)
 }
 
 ol {
@@ -19,10 +27,22 @@ ol {
 
 }
 
-.content ol li {
-  border-style: outset;
+.patList ol li {
+  border: 1px solid rgb(201, 201, 201);
   margin-top: 2%;
-  padding:5%;
+  padding: 5%;
 }
 
-a {color: blue}
+.blPatList ol li {
+  border: 1px solid rgb(201, 201, 201);
+  margin-top: 2%;
+  padding: 5%;
+}
+
+a {
+  color: blue
+}
+
+#account {
+  text-align: center;
+}

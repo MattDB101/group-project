@@ -11,6 +11,7 @@ const path = require('path');
 const hostname = "localhost";
 const port = 3001;
 const app = express();
+var contract = require("@truffle/contract");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -18,6 +19,9 @@ admin.initializeApp({
 
 app.set("view engine", "ejs"); // set view engine to use .ejs files
 app.use(express.static("./public")) // set css file location
+app.use(express.static("./contracts")) 
+app.use(express.static("./build/contracts")) 
+app.use(express.static("./node_modules")) 
 
 app.use(bodyParser.json()); // used parse body of post request
 app.use(cookieParser());
@@ -31,6 +35,19 @@ app.all("*", (req, res, next) => { // sets XSRF cookie for any request.
 
 app.get("/scripts/auth.js", function (req, res) {
   res.sendFile(path.join(__dirname, 'scripts', 'auth.js'));
+});
+
+app.get("/scripts/truffle-contract-min.js", function (req, res) {
+  res.sendFile(path.join(__dirname, 'scripts', 'truffle-contract-min.js'));
+});
+
+app.get("/build/contracts/Patients.json", function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'contracts', 'Patients.json'));
+});
+
+
+app.get("/build/contracts/Migrations.json", function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'contracts', 'Migrations.json'));
 });
 
 
