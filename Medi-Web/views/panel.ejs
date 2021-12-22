@@ -43,8 +43,7 @@
     <div class="display-8 text-center pt-2"><span id="account" class="text-center pt-5"></span></div>
     
 
-    <div class="row row-cols-1 row-cols-md-2" style="padding: 5% 20%; margin: auto;">
-
+    <div class="row row-cols-1 row-cols-md-2" style="padding: 5%; margin: auto;">
       <div class="col text-center pb-5">
         <span class="fs-4">Input patient's email to add them to your panel</span>
         <form id="addPatient" class="pt-4">
@@ -57,10 +56,8 @@
           <button class="w-100 btn btn-primary text-center py-2 mt-2" onclick="exportCSV()" type="button">Export All Patients</button>
         </form>
         <p id="error" style="display: none;">Test</p>
-      </div>
 
-      <div class="col pb-5" id="docDetails">
-        <ol class="list-group">
+        <ol class="list-group mt-5">
           <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
               <div id="name" class="fw-bold" style="display: inline;">Name: </div>
@@ -88,11 +85,12 @@
         </ol>
       </div>
 
+      
+      <div class="col">
       <div class="patList">
-        
         <ol id="pat-list"></ol>
-
       </div>
+    </div>
       <!-- UNCOMMENT THIS
       <div class="blPatList">
         

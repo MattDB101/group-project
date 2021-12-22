@@ -19,7 +19,7 @@ db.settings({
 nameSpan = document.createElement("span")
 roleSpan = document.createElement("span")
 phoneSpan = document.createElement("span")
-addressSpan = document.createElement("p")
+addressSpan = document.createElement("span")
 const patList = document.querySelector('#pat-list');
 
 
@@ -106,6 +106,7 @@ function update(user) {
 
 document.getElementById("addPatient").addEventListener("submit", (event) => {
     event.preventDefault();
+    flag = false
     const patEmail = event.target.patientEmail.value;
     console.log(patEmail)
     var errMsg = document.getElementById("error");
@@ -115,12 +116,17 @@ document.getElementById("addPatient").addEventListener("submit", (event) => {
 
     db.collection('doctors').doc(currentUser.email).collection('patients').where("email", "==", patEmail).get().then(snapshot => {
         snapshot.docs.forEach(doc => {
-            doc.ref.delete()
+            //doc.ref.delete()
+            flag = true
             errMsg.innerHTML = "You already own this patient";
             errMsg.style.display = "block";
+
         })
     }).then(() => {
-        let patFname, patLName, patTelephone, patAddress1, patAddress2, patCity, patRegion, patZip, patCountry, patWallet
+        if (flag) {
+            return
+        }
+        let patFname, patLName, patTelephone, patAddress1, patAddress2, patCity, patRegion, patZip, patCountry, patWallet, age, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, target, thal, thalach, trestbps = "Not Given."
         db.collection("patient").where("email", "==", patEmail).get().then(snapshot => {
             const doc = snapshot.docs[0];
             patFname = doc.data().fname;
@@ -134,7 +140,10 @@ document.getElementById("addPatient").addEventListener("submit", (event) => {
             patCountry = doc.data().country;
             patWallet = doc.data().wallet;
         }).then(() => {
-            (db.collection('doctors').doc(currentUser.email).collection('patients').add({
+            if (flag) {
+                return
+            }
+            (db.collection('doctors').doc(currentUser.email).collection('patients').doc(patEmail).set({
                 fname: patFname,
                 lname: patLName,
                 email: patEmail,
@@ -144,8 +153,70 @@ document.getElementById("addPatient").addEventListener("submit", (event) => {
                 city: patCity,
                 region: patRegion,
                 zip: patZip,
-                country: patCountry
+                country: patCountry,
+                wallet: patWallet
             }))
+        }).then(() => {
+            if (flag) {
+                return
+            }
+            db.collection('patient').doc(patEmail).collection('diseases').get().then(snapshot => {
+                snapshot.docs.forEach(doc => {
+                    if (doc.id == "alzheimers") { // alzheimers when its added
+                        (db.collection('doctors').doc(currentUser.email).collection('patients').doc(patEmail).collection("diseases").doc("alzheimers").set({
+                            age: doc.data().age,
+                            asf: doc.data().asf,
+                            cdr: doc.data().cdr,
+                            educ: doc.data().educ,
+                            etiv: doc.data().etiv,
+                            group: doc.data().group,
+                            hand: doc.data().hand,
+                            mF: doc.data().mF,
+                            mmse: doc.data().mmse,
+                            mrDelay: doc.data().mrDelay,
+                            nwbv: doc.data().nwbv,
+                            ses: doc.data().ses,
+                            visit: doc.data().visit,
+                        }))
+
+                    }
+
+                    if (doc.id == "diabetes") { // diabetes when its added
+                        (db.collection('doctors').doc(currentUser.email).collection('patients').doc(patEmail).collection("diseases").doc("diabetes").set({
+                            age: doc.data().age,
+                            bloodpressure: doc.data().bloodpressure,
+                            bmi: doc.data().bmi,
+                            dbf: doc.data().dbf,
+                            glucose: doc.data().glucose,
+                            insulin: doc.data().insulin,
+                            pregnancies: doc.data().pregnancies,
+                            skinthickness: doc.data().skinthickness,
+                            target: doc.data().target,
+                        }))
+                    }
+
+                    if (doc.id == "heart disease") { // Heart disease
+                        (db.collection('doctors').doc(currentUser.email).collection('patients').doc(patEmail).collection("diseases").doc("heart disease").set({
+                            age: doc.data().age,
+                            ca: doc.data().ca,
+                            chol: doc.data().chol,
+                            cp: doc.data().cp,
+                            exang: doc.data().exang,
+                            fbs: doc.data().fbs,
+                            oldpeak: doc.data().oldpeak,
+                            restecg: doc.data().restecg,
+                            sex: doc.data().sex,
+                            slope: doc.data().slope,
+                            target: doc.data().target,
+                            thal: doc.data().thal,
+                            thalach: doc.data().thalach,
+                            trestbps: doc.data().trestbps,
+                        }))
+                    }
+                })
+            })
+
+        }).then(() => {
             let name = patFname + " " + patLName
             let addr = patAddress1 + " " + patAddress2 + " " + patCity + " " + patRegion + " " + patZip + " " + patCountry
             let email = patEmail
@@ -174,11 +245,13 @@ function exportCSV() {
         currentUser
     } = firebase.auth();
     const data = [];
-
-
+    const arrofArr = [];
+    disseaseArr = [];
     db.collection('doctors').doc(currentUser.email).collection('patients').get().then(snapshot => {
         snapshot.docs.forEach(doc => {
-
+            var fName, lName, tel, email, add1, add2, city, region, zip, country, wallet
+            fName = lName = tel = email = add1 = add2 = city = region = zip = country = wallet = "Not Given";
+            var patArr = [];
             fName = doc.data().fname
             lName = doc.data().lname
             add1 = doc.data().add1
@@ -186,19 +259,87 @@ function exportCSV() {
             city = doc.data().city
             email = doc.data().email;
             tel = doc.data().tel;
-            console.log(tel)
-            arr = [fName, lName, add1, add2, city, email, tel]
-            data.push(arr);
-        });
+            region = doc.data().region;
+            zip = doc.data().zip;
+            country = doc.data().country;
+            wallet = doc.data().wallet;
+            patArr.push(fName, lName, tel, email, add1, add2, city, region, zip, country, wallet)
+            arrofArr.push(patArr);
+        })
     }).then(() => {
-    console.log(data[0])
-    let csvContent = "data:text/csv;charset=utf-8," +
-        data.map(e => e.join(",")).join("\n");
-    var encodedUri = encodeURI(csvContent);
-    var link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "patientData.csv");
-    document.body.appendChild(link);
-    link.click();
+        for (let i = 0; i < arrofArr.length; i++) {
+            db.collection('doctors').doc(currentUser.email).collection('patients').doc(arrofArr[i][3]).collection('diseases').get().then(snapshot => {
+                var age, asf, cdr, educ, etiv, group, hand, mF, mmse, mrDelay, nwbv, ses, visit, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, target, thal, thalach, trestbps
+                age = asf = cdr = educ = etiv = group = hand = mF = mmse = mrDelay = nwbv = ses = visit = bloodpressure = bmi = dbf = glucose = insulin = pregnancies = skinthickness = ca = chol = cp = exang = fbs = oldpeak = restecg = sex = slope = target = thal = thalach = trestbps = "Not Given";
+                snapshot.docs.forEach(doc => {
+                    if (doc.id == "alzheimers") { // alzheimers
+                        age = doc.data().age;
+                        asf = doc.data().asf;
+                        cdr = doc.data().cdr;
+                        educ = doc.data().educ;
+                        etiv = doc.data().etiv;
+                        group = doc.data().group;
+                        hand = doc.data().hand;
+                        mF = doc.data().mF;
+                        mmse = doc.data().mmse;
+                        mrDelay = doc.data().mrDelay;
+                        nwbv = doc.data().nwbv;
+                        ses = doc.data().ses;
+                        visit = doc.data().visit;
+
+                    }
+
+                    if (doc.id == "diabetes") { // diabetes when its added
+                        age = doc.data().age;
+                        bloodpressure = doc.data().bloodpressure;
+                        bmi = doc.data().bmi;
+                        dbf = doc.data().dbf;
+                        glucose = doc.data().glucose;
+                        insulin = doc.data().insulin;
+                        pregnancies = doc.data().pregnancies;
+                        skinthickness = doc.data().skinthickness;
+                        target = doc.data().target;
+
+
+                    }
+
+                    if (doc.id == "heart disease") { // Heart disease
+                        age = doc.data().age;
+                        ca = doc.data().ca;
+                        chol = doc.data().chol;
+                        cp = doc.data().cp;
+                        exang = doc.data().exang;
+                        fbs = doc.data().fbs;
+                        oldpeak = doc.data().oldpeak;
+                        restecg = doc.data().restecg;
+                        sex = doc.data().sex;
+                        slope = doc.data().slope;
+                        target = doc.data().target;
+                        thal = doc.data().thal;
+                        thalach = doc.data().thalach;
+                        trestbps = doc.data().trestbps;
+
+                    }
+                })
+                arrofArr[i].push(age, asf, cdr, educ, etiv, group, hand, mF, mmse, mrDelay, nwbv, ses, visit, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, target, thal, thalach, trestbps)
+            });
+        }
+        
+    }).then(() => {
+        setTimeout(() => {
+            for (let i = 0; i < arrofArr.length; i++) {
+
+                data.push(arrofArr[i])
+            }
+            let csvContent = "data:text/csv;charset=utf-8," +
+                data.map(e => e.join(",")).join("\n");
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "patientData.csv");
+            document.body.appendChild(link);
+            link.click();
+        }, 2000);
+
     });
 }
