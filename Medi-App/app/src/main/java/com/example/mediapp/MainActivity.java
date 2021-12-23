@@ -33,15 +33,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(activity2Intent);
             }
         });
-
-        Button next_button = findViewById(R.id.button3);
-        next_button.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                System.out.println("Button Clicked");
-
-                Intent activityIntent = new Intent(getApplicationContext(), heart_disease.class);
-                startActivity(activityIntent);
-            }
-        });
     }
 }
