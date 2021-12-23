@@ -1,37 +1,68 @@
 package com.example.mediapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
-import android.content.res.AssetFileDescriptor;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.tensorflow.lite.Interpreter;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.FileInputStream;
+import com.example.mediapp.ml.ModelHeartV3;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+
 import java.io.IOException;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class heart_disease extends AppCompatActivity {
 
-    Interpreter tflite;
     Button predictButton;
-    EditText age, gender, chestPain, bloodPressure, serumCholestrol, fastingBloodSugar, restingECG, maxHeartRate, exerciseAngina, stDepression, peakExercise, numberVessel, thal, diagnosis;
+    EditText age, gender, chestPain, bloodPressure, serumCholestrol, fastingBloodSugar, restingECG, maxHeartRate, exerciseAngina, stDepression, peakExercise, numberVessel, thal;
     TextView showResult;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
+    private static final String TAG = "HeartDiseasePrediction";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heart_disease);
+        showResult = findViewById(R.id.textView15);
+        mAuth = FirebaseAuth.getInstance();
 
         predictButton = findViewById(R.id.button);
+        predictButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                System.out.println("Predict Button Clicked");
+                String prediction = test(heart_disease.this);
+                float newNumber = Float.parseFloat(prediction.substring(1, prediction.length() - 1));
+                int number = Math.round(newNumber);
+                Log.d("Number", String.valueOf(number));
+                showResult.setText(Integer.toString(number));
+                updateData(number);
+            }
+        });
+    }
+
+    private void updateData(Integer predictionResult) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         age = findViewById(R.id.editTextTextPersonName);
         gender = findViewById(R.id.editTextTextPersonName2);
         chestPain = findViewById(R.id.editTextTextPersonName11);
@@ -45,111 +76,102 @@ public class heart_disease extends AppCompatActivity {
         peakExercise = findViewById(R.id.editTextTextPersonName20);
         numberVessel = findViewById(R.id.editTextTextPersonName21);
         thal = findViewById(R.id.editTextTextPersonName22);
-        diagnosis = findViewById(R.id.editTextTextPersonName23);
-        showResult = findViewById(R.id.textView15);
 
-        try {
-            tflite = new Interpreter(loadModelFile());
-        }catch (Exception ex){
-            ex.printStackTrace();
+        Map<String, Object> info = new HashMap<>();
+        info.put("age", Integer.parseInt(age.getText().toString()));
+        info.put("sex", Integer.parseInt(gender.getText().toString()));
+        info.put("cp", Integer.parseInt(chestPain.getText().toString()));
+        info.put("trestbps", Integer.parseInt(bloodPressure.getText().toString()));
+        info.put("chol", Integer.parseInt(serumCholestrol.getText().toString()));
+        info.put("fbs", Integer.parseInt(fastingBloodSugar.getText().toString()));
+        info.put("restecg", Integer.parseInt(restingECG.getText().toString()));
+        info.put("thalach", Integer.parseInt(maxHeartRate.getText().toString()));
+        info.put("exang", Integer.parseInt(exerciseAngina.getText().toString()));
+        info.put("oldpeak", Float.parseFloat(stDepression.getText().toString()));
+        info.put("slope", Integer.parseInt(peakExercise.getText().toString()));
+        info.put("ca", Integer.parseInt(numberVessel.getText().toString()));
+        info.put("thal", Integer.parseInt(thal.getText().toString()));
+        info.put("target", predictionResult);
+
+        if (currentUser != null) {
+            db.collection("patient")
+                    .document(currentUser.getEmail())
+                    .collection("diseases")
+                    .document("heart disease")
+                    .set(info, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                            Toast.makeText(heart_disease.this, "Info Added", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error writing document");
+                            Toast.makeText(heart_disease.this, "Info Not Added", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
-
-        predictButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                float prediction = doInference(age.getText().toString(), gender.getText().toString(), chestPain.getText().toString(), bloodPressure.getText().toString(),
-                        serumCholestrol.getText().toString(), fastingBloodSugar.getText().toString(), restingECG.getText().toString(), maxHeartRate.getText().toString(),
-                        exerciseAngina.getText().toString(), stDepression.getText().toString(), peakExercise.getText().toString(), numberVessel.getText().toString(),
-                        thal.getText().toString(), diagnosis.getText().toString());
-                System.out.println(prediction);
-                showResult.setText(Float.toString(prediction));
-            }
-        });
     }
 
-    private MappedByteBuffer loadModelFile() throws IOException {
-        AssetFileDescriptor fileDescriptor=this.getAssets().openFd("model_heart_v3.tflite");
-        FileInputStream inputStream=new FileInputStream(fileDescriptor.getFileDescriptor());
-        FileChannel fileChannel=inputStream.getChannel();
-        long startOffset=fileDescriptor.getStartOffset();
-        long declareLength=fileDescriptor.getDeclaredLength();
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY,startOffset,declareLength);
+    @Override
+    public void onStart(){
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            reload();
+        }
     }
 
-    private float doInference(String input1, String input2, String input3, String input4, String input5, String input6, String input7,
-                              String input8, String input9, String input10, String input11, String input12, String input13, String input14) {
-        // Map<String, Object> inputs = new HashMap<>();
-        float[] inputVal1=new float[1];
-        inputVal1[0]=Float.parseFloat(input1);
-        // inputs.put("age", inputVal1[0]);
+    public String test(Context context){
+        try{
+            ModelHeartV3 model = ModelHeartV3.newInstance(context);
 
-        float[] inputVal2=new float[1];
-        inputVal2[0]=Float.parseFloat(input2);
-        // inputs.put("gender", inputVal2[0]);
+            age = findViewById(R.id.editTextTextPersonName);
+            gender = findViewById(R.id.editTextTextPersonName2);
+            chestPain = findViewById(R.id.editTextTextPersonName11);
+            bloodPressure = findViewById(R.id.editTextTextPersonName12);
+            serumCholestrol = findViewById(R.id.editTextTextPersonName13);
+            fastingBloodSugar = findViewById(R.id.editTextTextPersonName15);
+            restingECG = findViewById(R.id.editTextTextPersonName16);
+            maxHeartRate = findViewById(R.id.editTextTextPersonName17);
+            exerciseAngina = findViewById(R.id.editTextTextPersonName18);
+            stDepression = findViewById(R.id.editTextTextPersonName19);
+            peakExercise = findViewById(R.id.editTextTextPersonName20);
+            numberVessel = findViewById(R.id.editTextTextPersonName21);
+            thal = findViewById(R.id.editTextTextPersonName22);
 
-        float[] inputVal3=new float[1];
-        inputVal3[0]=Float.parseFloat(input3);
-        // inputs.put("chestPain", inputVal3[0]);
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 13}, DataType.FLOAT32);
+            ByteBuffer buff = ByteBuffer.allocate(13 * 4);
+            buff.putFloat(Float.parseFloat(age.getText().toString()));
+            buff.putFloat(Float.parseFloat(gender.getText().toString()));
+            buff.putFloat(Float.parseFloat(chestPain.getText().toString()));
+            buff.putFloat(Float.parseFloat(bloodPressure.getText().toString()));
+            buff.putFloat(Float.parseFloat(serumCholestrol.getText().toString()));
+            buff.putFloat(Float.parseFloat(fastingBloodSugar.getText().toString()));
+            buff.putFloat(Float.parseFloat(restingECG.getText().toString()));
+            buff.putFloat(Float.parseFloat(maxHeartRate.getText().toString()));
+            buff.putFloat(Float.parseFloat(exerciseAngina.getText().toString()));
+            buff.putFloat(Float.parseFloat(stDepression.getText().toString()));
+            buff.putFloat(Float.parseFloat(peakExercise.getText().toString()));
+            buff.putFloat(Float.parseFloat(numberVessel.getText().toString()));
+            buff.putFloat(Float.parseFloat(thal.getText().toString()));
+            inputFeature0.loadBuffer(buff);
 
-        float[] inputVal4=new float[1];
-        inputVal4[0]=Float.parseFloat(input4);
-        // inputs.put("bloodPressure", inputVal4[0]);
-
-        float[] inputVal5=new float[1];
-        inputVal5[0]=Float.parseFloat(input5);
-        // inputs.put("serumCholestrol", inputVal5[0]);
-
-        float[] inputVal6=new float[1];
-        inputVal6[0]=Float.parseFloat(input6);
-        // inputs.put("fastingBloodSugar", inputVal6[0]);
-
-        float[] inputVal7=new float[1];
-        inputVal7[0]=Float.parseFloat(input7);
-        // inputs.put("restingECG", inputVal7[0]);
-
-        float[] inputVal8=new float[1];
-        inputVal8[0]=Float.parseFloat(input8);
-        // inputs.put("maxHeartRate", inputVal8[0]);
-
-        float[] inputVal9=new float[1];
-        inputVal9[0]=Float.parseFloat(input9);
-        // inputs.put("exerciseAngina", inputVal9[0]);
-
-        float[] inputVal10=new float[1];
-        inputVal10[0]=Float.parseFloat(input10);
-        // inputs.put("stDepression", inputVal10[0]);
-
-        float[] inputVal11=new float[1];
-        inputVal11[0]=Float.parseFloat(input11);
-        // inputs.put("peakExercise", inputVal11[0]);
-
-        float[] inputVal12=new float[1];
-        inputVal12[0]=Float.parseFloat(input12);
-        // inputs.put("numberVessel", inputVal12[0]);
-
-        float[] inputVal13=new float[1];
-        inputVal13[0]=Float.parseFloat(input13);
-        // inputs.put("thal", inputVal13[0]);
-
-        float[] inputVal14=new float[1];
-        inputVal14[0]=Float.parseFloat(input14);
-        // inputs.put("diagnosis", inputVal14[0]);
-        Float[] inputs = {inputVal1[0] ,inputVal2[0], inputVal3[0], inputVal4[0], inputVal5[0], inputVal6[0], inputVal7[0],
-                 inputVal8[0], inputVal9[0], inputVal10[0], inputVal11[0], inputVal12[0], inputVal13[0], inputVal14[0]};
+            ModelHeartV3.Outputs outputs = model.process(inputFeature0);
+            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
 
-        float[][] output=new float[1][1];
-        Map<Integer, Object> outputs = new HashMap<>();
-        outputs.put(0, output);
-        //tflite.runSignature(inputs, outputs);
-        tflite.runForMultipleInputsOutputs(inputs, outputs);
-        return output[0][0];
+            String result = Arrays.toString(outputFeature0.getFloatArray());
+            model.close();
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "result";
     }
 
+    private void reload(){ }
 }
-
-/*
-    implementation 'org.tensorflow:tensorflow-lite-task-vision:0.3.0'
-    implementation 'org.tensorflow:tensorflow-lite-task-text:0.3.0'
-    implementation 'org.tensorflow:tensorflow-lite-task-audio:0.3.0'
- */

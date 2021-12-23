@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class signup2 extends AppCompatActivity {
     private static final String TAG = "PersonalDetails";
     private FirebaseAuth mAuth;
 
-    Button nextButton, updateButton;
+    Button updateButton;
     EditText fname, lname, tel, add1, add2, city, region, zip, country, wallet;
 
     @Override
@@ -42,22 +43,14 @@ public class signup2 extends AppCompatActivity {
         setContentView(R.layout.activity_signup2);
         mAuth = FirebaseAuth.getInstance();
 
-
-        nextButton = findViewById(R.id.button);
-        nextButton.setOnClickListener(new View.OnClickListener(){
+        updateButton = findViewById(R.id.button);
+        updateButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 System.out.println("Sign Up Button Clicked");
                 addUser();
             }
         });
 
-        updateButton = findViewById(R.id.button2);
-        updateButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                System.out.println("Update Button Clicked");
-                updateInfo();
-            }
-        });
     }
 
     @Override
@@ -104,52 +97,10 @@ public class signup2 extends AppCompatActivity {
             user.put("email", currentUser.getEmail());
         }
 
-        /*if (currentUser != null) {
-            db.collection("patient")
-                    .whereEqualTo("email", currentUser.getEmail())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for(QueryDocumentSnapshot document: task.getResult()){
-                                    String emailValue = document.getString("email");
-                                    if(emailValue.equals(currentUser.getEmail())){
-                                        Log.d(TAG, "Account existed");
-                                        Toast.makeText(signup2.this, "Busted", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    }
-                                    else{
-                                        db.collection("patient")
-                                                .add(user)
-                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                    @Override
-                                                    public void onSuccess(DocumentReference documentReference) {
-                                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                                        Toast.makeText(signup2.this, "Info Added", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.w(TAG, "Error adding document", e);
-                                                        Toast.makeText(signup2.this, "Info Not Added", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                    }
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                                Toast.makeText(signup2.this, "Task failed", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }*/
-
         if (currentUser != null) {
             db.collection("patient")
                     .document(currentUser.getEmail())
-                    .set(user)
+                    .set(user, SetOptions.merge())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -165,41 +116,6 @@ public class signup2 extends AppCompatActivity {
                         }
                     });
         }
-
-        /*db.collection("patient")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                        Toast.makeText(signup2.this, "Info Added", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                        Toast.makeText(signup2.this, "Info Not Added", Toast.LENGTH_SHORT).show();
-                    }
-                });*/
-
-    }
-
-    private void updateInfo() {
-
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        fname = (EditText)findViewById(R.id.editTextTextPersonName);
-        lname = (EditText)findViewById(R.id.editTextTextPersonName2);
-        tel = (EditText)findViewById(R.id.editTextTextPersonName1);
-        add1 = (EditText)findViewById(R.id.editTextTextPersonName4);
-        add2 = (EditText)findViewById(R.id.editTextTextPersonName5);
-        city = (EditText)findViewById(R.id.editTextTextPersonName6);
-        region = (EditText)findViewById(R.id.editTextTextPersonName7);
-        zip = (EditText)findViewById(R.id.editTextTextPersonName8);
-        country = (EditText)findViewById(R.id.editTextTextPersonName9);
-        wallet = (EditText)findViewById(R.id.editTextTextPersonName3);
-
     }
 
     private void reload(){ }

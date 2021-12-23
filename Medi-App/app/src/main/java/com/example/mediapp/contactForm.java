@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -78,12 +79,11 @@ public class contactForm extends AppCompatActivity {
 
         if (currentUser != null) {
             db.collection("contacts")
-                    .document(currentUser.getEmail())
-                    .set(contact)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    .add(contact)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "DocumentSnapshot successfully written!" + documentReference.getId());
                             Toast.makeText(contactForm.this, "Info Added", Toast.LENGTH_SHORT).show();
                         }
                     })
