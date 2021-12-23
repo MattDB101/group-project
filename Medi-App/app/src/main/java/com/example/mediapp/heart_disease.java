@@ -4,29 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.mediapp.ml.ModelHeartV2;
-
-import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class medi_AI_page extends AppCompatActivity {
+public class heart_disease extends AppCompatActivity {
 
     Interpreter tflite;
     Button predictButton;
@@ -36,7 +28,7 @@ public class medi_AI_page extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_medi_ai_page);
+        setContentView(R.layout.activity_heart_disease);
 
         predictButton = findViewById(R.id.button);
         age = findViewById(R.id.editTextTextPersonName);

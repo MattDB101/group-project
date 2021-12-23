@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 System.out.println("Button Clicked");
 
-                Intent activityIntent = new Intent(getApplicationContext(), medi_AI_page.class);
+                Intent activityIntent = new Intent(getApplicationContext(), heart_disease.class);
                 startActivity(activityIntent);
             }
         });

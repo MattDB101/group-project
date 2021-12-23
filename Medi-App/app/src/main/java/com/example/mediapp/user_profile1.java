@@ -65,7 +65,7 @@ public class user_profile1 extends AppCompatActivity {
             public void onClick(View v){
                 System.out.println("Feedback Button Clicked");
 
-                Intent feedbackIntent = new Intent(getApplicationContext(), medi_AI_page.class);
+                Intent feedbackIntent = new Intent(getApplicationContext(), diseaseSelection.class);
                 startActivity(feedbackIntent);
             }
         });
