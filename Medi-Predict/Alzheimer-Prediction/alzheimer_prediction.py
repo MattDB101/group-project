@@ -14,6 +14,7 @@ dataset = dataset.reset_index(drop=True)  # reset index after filtering
 
 dataset = dataset[['Group', 'M/F', 'Age', 'EDUC', 'SES',
              'MMSE', 'CDR', 'eTIV', 'nWBV', 'ASF']]
+
 dataset.rename(columns={'M/F': 'Gender'}, inplace=True)
 dataset.head()
 
@@ -44,9 +45,9 @@ from keras.layers import Dense
 from keras.callbacks import ModelCheckpoint
 
 model = Sequential()
-model.add(Dense(8, activation='relu', input_shape=X_train[0].shape))
-model.add(Dense(8, activation='relu'))
-model.add(Dense(4, activation='relu'))
+model.add(Dense(10, activation='relu', input_shape=X_train[0].shape))
+model.add(Dense(10, activation='relu'))
+model.add(Dense(5, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
