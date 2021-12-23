@@ -34,7 +34,7 @@ public class signup2 extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     Button nextButton, updateButton;
-    EditText fname, lname, tel, add1, add2, city, region, zip, country;
+    EditText fname, lname, tel, add1, add2, city, region, zip, country, wallet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +82,7 @@ public class signup2 extends AppCompatActivity {
         region = (EditText)findViewById(R.id.editTextTextPersonName7);
         zip = (EditText)findViewById(R.id.editTextTextPersonName8);
         country = (EditText)findViewById(R.id.editTextTextPersonName9);
+        wallet = (EditText)findViewById(R.id.editTextTextPersonName3);
 
         Map<String, Object> user = new HashMap<>();
         user.put("fname", fname.getText().toString());
@@ -97,6 +98,7 @@ public class signup2 extends AppCompatActivity {
         user.put("region", region.getText().toString());
         user.put("zip", zip.getText().toString());
         user.put("country", country.getText().toString());
+        user.put("wallet", wallet.getText().toString());
 
         if (currentUser != null) {
             user.put("email", currentUser.getEmail());
@@ -196,6 +198,7 @@ public class signup2 extends AppCompatActivity {
         region = (EditText)findViewById(R.id.editTextTextPersonName7);
         zip = (EditText)findViewById(R.id.editTextTextPersonName8);
         country = (EditText)findViewById(R.id.editTextTextPersonName9);
+        wallet = (EditText)findViewById(R.id.editTextTextPersonName3);
 
     }
 
