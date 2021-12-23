@@ -70,15 +70,11 @@ public class signup1 extends AppCompatActivity {
                         Log.d(TAG, "createUserWithEmail:success");
                         Toast.makeText(signup1.this, "Account created, check verification email", Toast.LENGTH_SHORT).show();
                         FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
 
-                        /*Intent signup2Intent = new Intent(getApplicationContext(), signup2.class);
-                        startActivity(signup2Intent);*/
                     }
                     else{
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
                         Toast.makeText(signup1.this, "User account created", Toast.LENGTH_SHORT).show();
-                        updateUI(null);
                     }
             }
         });
@@ -100,7 +96,4 @@ public class signup1 extends AppCompatActivity {
     }
 
     private void reload(){ }
-
-    private void updateUI(FirebaseUser user){ }
-
 }

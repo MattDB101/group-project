@@ -3,6 +3,7 @@ package com.example.mediapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -116,6 +117,9 @@ public class signup2 extends AppCompatActivity {
                         }
                     });
         }
+
+        Intent backToUserHomepage = new Intent(getApplicationContext(), user_profile1.class);
+        startActivity(backToUserHomepage);
     }
 
     private void reload(){ }
