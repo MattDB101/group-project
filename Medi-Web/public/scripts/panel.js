@@ -21,7 +21,9 @@ roleSpan = document.createElement("span")
 phoneSpan = document.createElement("span")
 addressSpan = document.createElement("span")
 const patList = document.querySelector('#pat-list');
+const queryRes = document.querySelector('#queryRes');
 
+const patients = []
 
 firebase.auth().onAuthStateChanged(user => {
     if (user) {
@@ -83,10 +85,18 @@ function update(user) {
             li.appendChild(email);
             li.appendChild(tel);
             li.appendChild(add);
+
+            newlink2 = document.createElement('a');
+            newlink2.innerHTML = 'View AI Results';
+            newlink2.setAttribute('title', 'View');
+            newlink2.setAttribute('href', 'javascript:void(0)');
+            li.appendChild(newlink2);
+
             newlink = document.createElement('a');
             newlink.innerHTML = 'Delete';
             newlink.setAttribute('title', 'Delete');
             newlink.setAttribute('href', 'javascript:void(0)');
+            newlink.style.marginLeft = "10px";
             li.appendChild(newlink);
 
             patList.appendChild(li);
@@ -99,9 +109,312 @@ function update(user) {
                 db.collection('doctors').doc(user.email).collection('patients').doc(id).delete();
                 location.reload()
             })
+
+            // deleteing data
+            newlink2.addEventListener("click", (e) => {
+                e.stopPropagation()
+                let id = e.target.parentElement.getAttribute("data-id")
+                console.log(id)
+                getAIres(id)
+            })
         });
     });
 }
+
+function getAIres(patEmail) {
+    const {
+        currentUser
+    } = firebase.auth();
+    var age, asf, cdr, educ, etiv, group, hand, mF, mmse, mrDelay, nwbv, ses, visit, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, heartTarget, diabetesTarget, thal, thalach, trestbps
+    age = asf = cdr = educ = etiv = group = hand = mF = mmse = mrDelay = nwbv = ses = visit = bloodpressure = bmi = dbf = glucose = insulin = pregnancies = skinthickness = ca = chol = cp = exang = fbs = oldpeak = restecg = sex = slope = heartTarget = diabetesTarget = thal = thalach = trestbps = "Not Enough Data.";
+    db.collection('patient').doc(patEmail).collection('diseases').get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+            if (doc.id == "alzheimers") { // alzheimers
+                age = doc.data().age;
+                asf = doc.data().asf;
+                cdr = doc.data().cdr;
+                educ = doc.data().educ;
+                etiv = doc.data().etiv;
+                group = doc.data().group;
+                hand = doc.data().hand;
+                mF = doc.data().mF;
+                mmse = doc.data().mmse;
+                mrDelay = doc.data().mrDelay;
+                nwbv = doc.data().nwbv;
+                ses = doc.data().ses;
+                visit = doc.data().visit;
+
+            }
+
+            if (doc.id == "diabetes") { // diabetes when its added
+                age = doc.data().age;
+                bloodpressure = doc.data().bloodpressure;
+                bmi = doc.data().bmi;
+                dbf = doc.data().dbf;
+                glucose = doc.data().glucose;
+                insulin = doc.data().insulin;
+                pregnancies = doc.data().pregnancies;
+                skinthickness = doc.data().skinthickness;
+                diabetesTarget = doc.data().target;
+
+
+            }
+
+            if (doc.id == "heart disease") { // Heart disease
+                age = doc.data().age;
+                ca = doc.data().ca;
+                chol = doc.data().chol;
+                cp = doc.data().cp;
+                exang = doc.data().exang;
+                fbs = doc.data().fbs;
+                oldpeak = doc.data().oldpeak;
+                restecg = doc.data().restecg;
+                sex = doc.data().sex;
+                slope = doc.data().slope;
+                heartTarget = doc.data().target;
+                thal = doc.data().thal;
+                thalach = doc.data().thalach;
+                trestbps = doc.data().trestbps;
+
+            }
+        })
+    }).then(() => {
+        alzheimers = "Alzheimers : " + group;
+
+        switch (diabetesTarget) {
+            case 0:
+                diabetes = "Diabetes: Absent"
+                break;
+            case 1:
+                diabetes = "Diabetes: Likely"
+                break;
+            default:
+                diabetes = "Diabetes: " + heartTarget
+                break;
+        }
+
+        switch (heartTarget) {
+            case 0:
+                heart = "Heart Disease: Absent"
+                break;
+            case 1:
+                heart = "Heart Disease: Mild"
+                break;
+            case 2:
+                heart = "Heart Disease: Minor"
+                break;
+            case 3:
+                heart = "Heart Disease: Moderate"
+                break;
+            case 4:
+                heart = "Heart Disease: Severe"
+                break;
+            default:
+                heart = "Heart Disease: " + heartTarget
+                break;
+        }
+
+        alert("AI Results for patient " + patEmail + "\n" + alzheimers + "\n" + heart + "\n" + diabetes)
+
+    })
+}
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+
+
+
+
+
+document.getElementById("alzheimersForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    var totPats = 0;
+    var illpats = 0;
+    const formage = event.target.age.value;
+    formAge = parseInt(formage)
+    const formSex = event.target.sex.value;
+    const formCdr = event.target.cdr.value;
+    const formEtiv = event.target.etiv.value;
+    console.log(formAge, formSex, formCdr, formEtiv)
+
+
+    db.collection('patient').get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+            patients.push(doc.data().email)
+        })
+    }).then(() => {
+        var unique = patients.filter(onlyUnique);
+        console.log(unique)
+        for (let i = 0; i < unique.length; i++) {
+            db.collection('patient').doc(unique[i]).collection('diseases').get().then(snapshot => {
+                snapshot.docs.forEach(doc => {
+                    if (doc.id == "alzheimers") {
+
+                        patAge = doc.data().age;
+                        patCdr = doc.data().cdr;
+                        patSex = doc.data().mF;
+                        patEtiv = doc.data().etiv;
+                        patTarget = doc.data().group;
+                        totPats++
+
+                        if (formAge == 60) {
+                            var ageBool = (patAge > formAge)
+                        } else {
+                            var ageBool = (patAge > formAge && patAge < formAge + 19)
+                        }
+
+                        if (ageBool && (patSex == formSex) && (patCdr <= formCdr) && (patEtiv >= formEtiv) && patTarget == "Demented") {
+                            illpats++
+                        
+                        }
+                    }
+                })
+            })
+        }
+
+    }).then(() => {
+        setTimeout(() => {
+            console.log(illpats, totPats)
+            percent = illpats / totPats * 100
+            queryRes.innerHTML = percent + "% of patients in the database that match the given description description have Alzheimer's.";
+
+        }, 2000);
+    })
+})
+
+
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
+document.getElementById("diabetesForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    var totPats = 0;
+    var illpats = 0;
+    const formage = event.target.age.value;
+    formAge = parseInt(formage)
+    const formBp = event.target.bp.value;
+    const formBmi = event.target.bmi.value;
+    const formGlucose = event.target.glucose.value;
+
+    console.log(formAge, formBp, formBmi, formGlucose)
+
+    db.collection('patient').get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+            patients.push(doc.data().email)
+        })
+    }).then(() => {
+        var unique = patients.filter(onlyUnique);
+        console.log(unique)
+        for (let i = 0; i < unique.length; i++) {
+            db.collection('patient').doc(unique[i]).collection('diseases').get().then(snapshot => {
+                snapshot.docs.forEach(doc => {
+                    if (doc.id == "diabetes") {
+
+                        patAge = doc.data().age;
+                        patBmi = doc.data().bmi;
+                        patBp = doc.data().bloodpressure;
+                        patGlucose = doc.data().glucose;
+                        patTarget = doc.data().target;
+                        totPats++
+
+                        console.log(formAge, patAge, patBmi, patBp, patGlucose)
+                        if (formAge == 60) {
+                            var ageBool = (patAge > formAge)
+                        } else {
+                            var ageBool = (patAge > formAge && patAge < formAge + 19)
+                        }
+                        console.log(ageBool)
+                        if (ageBool & (patBp <= formBp) && (patGlucose <= formGlucose) && (patBmi <= formBmi) && patTarget == 1) {
+                            illpats++
+                            
+                        }
+                    }
+                })
+            })
+        }
+
+    }).then(() => {
+        setTimeout(() => {
+            console.log(illpats, totPats)
+            percent = illpats / totPats * 100
+            queryRes.innerHTML = percent + "% of patients in the database that match the given description description have Diabetes.";
+        }, 1000);
+    })
+})
+
+document.getElementById("heartForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    var totPats = 0;
+    var illpats = 0;
+    const formage = event.target.age.value;
+    formAge = parseInt(formage)
+    const formSex = event.target.sex.value;
+    const formBp = event.target.bp.value;
+    const formCholestrol = event.target.cholestrol.value;
+    console.log(formAge, formSex, formBp, formCholestrol)
+
+
+    db.collection('patient').get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+            patients.push(doc.data().email)
+        })
+    }).then(() => {
+        var unique = patients.filter(onlyUnique);
+        console.log(unique)
+        for (let i = 0; i < unique.length; i++) {
+            db.collection('patient').doc(unique[i]).collection('diseases').get().then(snapshot => {
+                snapshot.docs.forEach(doc => {
+                    if (doc.id == "heart disease") { // Heart disease
+
+                        patAge = doc.data().age;
+                        patCholestrol = doc.data().chol;
+                        patSex = doc.data().sex;
+                        patBp = doc.data().trestbps;
+                        patTarget = doc.data().target;
+                        totPats++
+
+                        if (formAge == 60) {
+                            var ageBool = (patAge > formAge)
+                        } else {
+                            var ageBool = (patAge > formAge && patAge < formAge + 19)
+                        }
+                        
+                        if (ageBool && (patSex == formSex) && (patCholestrol <= formCholestrol) && (patBp <= formBp) && patTarget == 1) {
+                            illpats++
+                            
+                        }
+                    }
+                })
+            })
+        }
+
+    }).then(() => {
+        setTimeout(() => {
+            console.log(illpats, totPats)
+            percent = illpats / totPats * 100
+            queryRes.innerHTML = percent + "% of patients in the database that match the given description description have Heart Disease.";
+        }, 1000);
+    })
+})
+
+
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
 
 
 document.getElementById("addPatient").addEventListener("submit", (event) => {
@@ -324,7 +637,7 @@ function exportCSV() {
                 arrofArr[i].push(age, asf, cdr, educ, etiv, group, hand, mF, mmse, mrDelay, nwbv, ses, visit, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, target, thal, thalach, trestbps)
             });
         }
-        
+
     }).then(() => {
         setTimeout(() => {
             for (let i = 0; i < arrofArr.length; i++) {
