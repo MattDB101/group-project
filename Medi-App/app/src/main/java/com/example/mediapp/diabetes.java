@@ -79,7 +79,7 @@ public class diabetes extends AppCompatActivity {
         info.put("bloodpressure", Integer.parseInt(bloodPressure.getText().toString()));
         info.put("skinthickness", Integer.parseInt(skinThickness.getText().toString()));
         info.put("insulin", Integer.parseInt(insulin.getText().toString()));
-        info.put("BMI", number1);
+        info.put("bmi", number1);
         info.put("dbf", Float.parseFloat(diabetesPedigree.getText().toString()));
         info.put("age", Integer.parseInt(age.getText().toString()));
         info.put("target", predictionResult);
