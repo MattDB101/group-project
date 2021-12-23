@@ -187,6 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:text="Resting ECG"
                 app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName15"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName15"
@@ -196,7 +197,7 @@
                 android:id="@+id/editTextTextPersonName16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="20dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="@+id/textView20"
@@ -275,6 +276,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:text="Peak Exercise ST Segment"
                 app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName19"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName19"
@@ -382,7 +384,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nestedScrollView"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintVertical_bias="0.458" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

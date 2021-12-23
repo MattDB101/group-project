@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class user_profile1 extends AppCompatActivity {
 
     TextView welcomeText;
-    Button signOut, editDetail, feedback, mediAI;
+    Button signOut, editDetail, feedback, mediAI, contactFormButton, insuranceButton;
     private FirebaseAuth mAuth;
 
     @Override
@@ -63,10 +63,30 @@ public class user_profile1 extends AppCompatActivity {
         mediAI = findViewById(R.id.button9);
         mediAI.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                System.out.println("Feedback Button Clicked");
+                System.out.println("Medi-AI Button Clicked");
 
-                Intent feedbackIntent = new Intent(getApplicationContext(), diseaseSelection.class);
-                startActivity(feedbackIntent);
+                Intent mediAiIntent = new Intent(getApplicationContext(), diseaseSelection.class);
+                startActivity(mediAiIntent);
+            }
+        });
+
+        contactFormButton = findViewById(R.id.button10);
+        contactFormButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                System.out.println("Contact Form Button Clicked");
+
+                Intent contactIntent = new Intent(getApplicationContext(), contactForm.class);
+                startActivity(contactIntent);
+            }
+        });
+
+        insuranceButton = findViewById(R.id.button11);
+        insuranceButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                System.out.println("Insurance Button Clicked");
+
+                Intent insuranceIntent = new Intent(getApplicationContext(), insurance.class);
+                startActivity(insuranceIntent);
             }
         });
 

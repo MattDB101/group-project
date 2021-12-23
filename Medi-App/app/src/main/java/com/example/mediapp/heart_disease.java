@@ -2,6 +2,7 @@ package com.example.mediapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
 import android.view.View;
@@ -75,17 +76,6 @@ public class heart_disease extends AppCompatActivity {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY,startOffset,declareLength);
     }
 
-    /*private float doInference(String input1, String input2) {
-        Map<String, Object> inputs = new HashMap<>();
-        inputs.put("Age", Integer.parseInt(input1));
-        inputs.put("Sex", Integer.parseInt(input2));
-        Map<String, Object> outputs = new HashMap<>();
-        float[][] output = new float[1][1];
-        outputs.put("Percentage", output);
-        tflite.run(inputs, outputs);
-        return output[0][0];
-    }*/
-
     private float doInference(String input1, String input2, String input3, String input4, String input5, String input6, String input7,
                               String input8, String input9, String input10, String input11, String input12, String input13, String input14) {
         // Map<String, Object> inputs = new HashMap<>();
@@ -146,6 +136,7 @@ public class heart_disease extends AppCompatActivity {
         // inputs.put("diagnosis", inputVal14[0]);
         Float[] inputs = {inputVal1[0] ,inputVal2[0], inputVal3[0], inputVal4[0], inputVal5[0], inputVal6[0], inputVal7[0],
                  inputVal8[0], inputVal9[0], inputVal10[0], inputVal11[0], inputVal12[0], inputVal13[0], inputVal14[0]};
+
 
         float[][] output=new float[1][1];
         Map<Integer, Object> outputs = new HashMap<>();
