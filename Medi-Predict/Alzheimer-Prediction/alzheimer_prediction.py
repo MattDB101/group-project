@@ -1,19 +1,9 @@
 # Load libraries
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import tensorflow as tf
-import lightgbm as lgb
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler as ss
-from sklearn.svm import SVC
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from xgboost import XGBClassifier
+
 
 dataset = pd.read_csv('extras/oasis_longitudinal.csv')
 dataset.head()
@@ -40,8 +30,8 @@ dataset['Gender'] = dataset['Gender'].apply(lambda x: 1 if x == 'M' else 0)
 dataset.head(10)
 dataset = dataset.astype('float64')
 
-X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, -1].values
+y = dataset['Group']
+X = dataset.drop(['Group', 'ASF'], axis=1)
 
 X_train, X_validation, y_train, Y_validation = train_test_split(X, y, test_size=0.2, random_state=0)
 
@@ -49,17 +39,22 @@ sc = ss()
 X_train = sc.fit_transform(X_train)
 X_validation = sc.transform(X_validation)
 
-# SVM
-model = SVC(kernel='rbf')
-model.fit(X_train, y_train)
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.callbacks import ModelCheckpoint
 
-# Predicting the Test set results
-y_pred = model.predict(X_validation)
+model = Sequential()
+model.add(Dense(8, activation='relu', input_shape=X_train[0].shape))
+model.add(Dense(8, activation='relu'))
+model.add(Dense(4, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
 
-cm_test = confusion_matrix(y_pred, Y_validation)
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
 
-y_pred_train = model.predict(X_train)
-cm_train = confusion_matrix(y_pred_train, y_train)
+checkpointer = ModelCheckpoint('alzheimer.h5', monitor='val_acc', mode='max', verbose=2, save_best_only=True)
+history=model.fit(X_train, y_train, batch_size=16, epochs=350, validation_data=(X_validation, Y_validation), callbacks=[checkpointer])
 
-print('Accuracy for training set for svm = {}'.format((cm_train[0][0] + cm_train[1][1]) / len(y_train)))
-print('Accuracy for test set for svm = {}'.format((cm_test[0][0] + cm_test[1][1]) / len(Y_validation)))
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+tflite_model = converter.convert()
+
+open("extras/alzheimer_model.tflite", "wb").write(tflite_model)
