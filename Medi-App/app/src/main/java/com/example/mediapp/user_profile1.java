@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -95,8 +97,9 @@ public class user_profile1 extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if(currentUser != null || account != null){
             reload();
         }
     }

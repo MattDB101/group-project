@@ -85,14 +85,14 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="user_login"
         android:text="@string/login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.699"
+        app:layout_constraintHorizontal_bias="0.687"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.667"
-        android:onClick="user_login" />
+        app:layout_constraintVertical_bias="0.636" />
 
     <Button
         android:id="@+id/button4"
@@ -101,10 +101,10 @@
         android:text="@string/back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.312"
+        app:layout_constraintHorizontal_bias="0.309"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.667" />
+        app:layout_constraintVertical_bias="0.636" />
 
     <TextView
         android:id="@+id/textView4"
@@ -113,10 +113,10 @@
         android:text="@string/attempt_3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.679"
+        app:layout_constraintHorizontal_bias="0.669"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.726" />
+        app:layout_constraintVertical_bias="0.688" />
 
     <TextView
         android:id="@+id/textView5"
@@ -129,6 +129,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.164" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.765" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
