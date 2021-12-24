@@ -43,7 +43,7 @@
     <div class="display-8 text-center pt-2"><span id="account" class="text-center pt-5"></span></div>
 
 
-    <div class="row row-cols-1 row-cols-md-2"
+    <div class="row row-cols-1 row-cols-md-3"
       style="padding-top: 2.5%; padding-left: 2.5%; padding-right: 2.5%; margin: auto;">
       <div class="col text-center pb-5">
         <span class="fs-4">Input patient's email to add them to your panel</span>
@@ -93,9 +93,21 @@
           <ol id="pat-list"></ol>
         </div>
       </div>
+
+      <div class="col">
+        
+        <div class="msglist">
+          
+          <ol id="msg-list"><h3 id="messageHeading" class="d-flex justify-content-center mb-2">You have 0 messages.</h3></ol>
+        </div>
+      </div>
+      
     </div>
 
+
+
     <hr>
+
     <h3 class="d-flex justify-content-center mt-5 mb-4">User Profiling</h3>
     <h5 id="queryRes" class="d-flex justify-content-center mb-2"></h5>
 
@@ -109,52 +121,52 @@
       <div id="Alzheimers" class="tabcontent">
         <form id="alzheimersForm" class="row g-6">
           <h5 class="d-flex justify-content-center mt-2 mb-3">Query for the % of Alzheimers patients where:</h5>
-          
-            <div class="col-md-3">
-              <label for="age" class="form-label">Age Range: </label>
-              <select id="age" class="form-control" placeholder="age" required>
-                <option value="" selected disabled hidden>Select Age range</option>
-                <option value="20">20-40</option>
-                <option value="40">40-60</option>
-                <option value="60">60+</option>
 
-              </select>
-            </div>
+          <div class="col-md-3">
+            <label for="age" class="form-label">Age Range: </label>
+            <select id="age" class="form-control" placeholder="age" required>
+              <option value="" selected disabled hidden>Select Age range</option>
+              <option value="20">20-40</option>
+              <option value="40">40-60</option>
+              <option value="60">60+</option>
 
-            <div class="col-md-3">
-              <label for="sex" class="form-label">Sex: </label>
-              <select id="sex" class="form-control" placeholder="sex" required>
-                <option value="" selected disabled hidden>Select Sex</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
+            </select>
+          </div>
 
-              </select>
-            </div>
+          <div class="col-md-3">
+            <label for="sex" class="form-label">Sex: </label>
+            <select id="sex" class="form-control" placeholder="sex" required>
+              <option value="" selected disabled hidden>Select Sex</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
 
-            <div class="col-md-3">
-              <label for="cdr" class="form-label">Clinical Dementia Rating: (Less Then)</label>
-              <select id="cdr" class="form-control" placeholder="CDR" required>
-                <option value="" selected disabled hidden>Select CDR</option>
-                <option value="0">0</option>
-                <option value="0.5">0.5</option>
-                <option value="1">1</option>
-                <option value="1.5">1.5</option>
-                <option value="2">2</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label for="cdr" class="form-label">Clinical Dementia Rating: (Less Then)</label>
+            <select id="cdr" class="form-control" placeholder="CDR" required>
+              <option value="" selected disabled hidden>Select CDR</option>
+              <option value="0">0</option>
+              <option value="0.5">0.5</option>
+              <option value="1">1</option>
+              <option value="1.5">1.5</option>
+              <option value="2">2</option>
 
 
-              </select>
-            </div>
+            </select>
+          </div>
 
-            <div class="col-md-3">
-              <label for="etiv" class="form-label">Estimated TIV: <small>(Greater Then)</small></label>
-              <input type="text" class="form-control" id="etiv">
-            </div>
+          <div class="col-md-3">
+            <label for="etiv" class="form-label">Estimated TIV: <small>(Greater Then)</small></label>
+            <input type="text" class="form-control" id="etiv">
+          </div>
 
-            <div class="col-12 text-center pt-2">
-              <br>
-              <button style="width: 20%; margin: auto;" type="submit" class="btn mb-3 btn-primary btn-lg">Query
-                Database</button>
-            </div>
+          <div class="col-12 text-center pt-2">
+            <br>
+            <button style="width: 20%; margin: auto;" type="submit" class="btn mb-3 btn-primary btn-lg">Query
+              Database</button>
+          </div>
         </form>
       </div>
 
@@ -164,37 +176,37 @@
           <h5 class="d-flex justify-content-center mt-2 mb-3">Query for the % of Diabetes patients where:</h5>
 
 
-            <div class="col-md-3">
-              <label for="age" class="form-label">Age Range: </label>
-              <select id="age" class="form-control" placeholder="age" required>
-                <option value="" selected disabled hidden>Select Age range</option>
-                <option value="20">20-40</option>
-                <option value="40">40-60</option>
-                <option value="60">60+</option>
+          <div class="col-md-3">
+            <label for="age" class="form-label">Age Range: </label>
+            <select id="age" class="form-control" placeholder="age" required>
+              <option value="" selected disabled hidden>Select Age range</option>
+              <option value="20">20-40</option>
+              <option value="40">40-60</option>
+              <option value="60">60+</option>
 
-              </select>
-            </div>
+            </select>
+          </div>
 
-            <div class="col-md-3">
-              <label for="bp" class="form-label">Blood Pressure: <small>(Less Then)</small></label>
-              <input type="text" class="form-control" id="bp">
-            </div>
+          <div class="col-md-3">
+            <label for="bp" class="form-label">Blood Pressure: <small>(Less Then)</small></label>
+            <input type="text" class="form-control" id="bp">
+          </div>
 
-            <div class="col-md-3">
-              <label for="bmi" class="form-label">BMI: <small>(Less Then)</small></label>
-              <input type="text" class="form-control" id="bmi">
-            </div>
+          <div class="col-md-3">
+            <label for="bmi" class="form-label">BMI: <small>(Less Then)</small></label>
+            <input type="text" class="form-control" id="bmi">
+          </div>
 
-            <div class="col-md-3">
-              <label for="glucose" class="form-label">Glucose (mg/dL): <small>(Less Then)</small></label>
-              <input type="text" class="form-control" id="glucose">
-            </div>
+          <div class="col-md-3">
+            <label for="glucose" class="form-label">Glucose (mg/dL): <small>(Less Then)</small></label>
+            <input type="text" class="form-control" id="glucose">
+          </div>
 
-            <div class="col-12 text-center pt-2">
-              <br>
-              <button style="width: 20%; margin: auto;" type="submit" class="btn mb-3 btn-primary btn-lg">Query
-                Database</button>
-            </div>
+          <div class="col-12 text-center pt-2">
+            <br>
+            <button style="width: 20%; margin: auto;" type="submit" class="btn mb-3 btn-primary btn-lg">Query
+              Database</button>
+          </div>
         </form>
       </div>
 
@@ -202,50 +214,50 @@
       <div id="Heart Disease" class="tabcontent">
         <form id="heartForm" class="row g-6">
           <h5 class="d-flex justify-content-center mt-2 mb-3">Query for the % of Heart Disease patients where:</h5>
-          
-            <div class="col-md-3">
-              <label for="age" class="form-label">Age Range: </label>
-              <select id="age" class="form-control" placeholder="age" required>
-                <option value="" selected disabled hidden>Select Age range</option>
-                <option value="20">20-40</option>
-                <option value="40">40-60</option>
-                <option value="60">60+</option>
 
-              </select>
-            </div>
+          <div class="col-md-3">
+            <label for="age" class="form-label">Age Range: </label>
+            <select id="age" class="form-control" placeholder="age" required>
+              <option value="" selected disabled hidden>Select Age range</option>
+              <option value="20">20-40</option>
+              <option value="40">40-60</option>
+              <option value="60">60+</option>
 
-            <div class="col-md-3">
-              <label for="sex" class="form-label">Sex: </label>
-              <select id="sex" class="form-control" placeholder="sex" required>
-                <option value="" selected disabled hidden>Select Sex</option>
-                <option value="1">Male</option>
-                <option value="0">Female</option>
+            </select>
+          </div>
 
-              </select>
-            </div>
+          <div class="col-md-3">
+            <label for="sex" class="form-label">Sex: </label>
+            <select id="sex" class="form-control" placeholder="sex" required>
+              <option value="" selected disabled hidden>Select Sex</option>
+              <option value="1">Male</option>
+              <option value="0">Female</option>
 
-            <div class="col-md-3">
-              <label for="bp" class="form-label">Blood Pressure <small>(Less Then)</small>: </label>
-              <input type="text" class="form-control" id="bp">
-            </div>
+            </select>
+          </div>
 
-            <div class="col-md-3">
-              <label for="cholestrol" class="form-label">Cholestrol (mg/dL): <small>(Less Then)</small></label>
-              <input type="text" class="form-control" id="cholestrol">
-            </div>
+          <div class="col-md-3">
+            <label for="bp" class="form-label">Blood Pressure <small>(Less Then)</small>: </label>
+            <input type="text" class="form-control" id="bp">
+          </div>
 
-            <div class="col-12 text-center pt-2">
-              <br>
-              <button style="width: 20%; margin: auto;" type="submit" class="btn mb-3 btn-primary btn-lg">Query
-                Database</button>
-            </div>
+          <div class="col-md-3">
+            <label for="cholestrol" class="form-label">Cholestrol (mg/dL): <small>(Less Then)</small></label>
+            <input type="text" class="form-control" id="cholestrol">
+          </div>
+
+          <div class="col-12 text-center pt-2">
+            <br>
+            <button style="width: 20%; margin: auto;" type="submit" class="btn mb-3 btn-primary btn-lg">Query
+              Database</button>
+          </div>
         </form>
       </div>
     </div>
+
+
     
-    
-    <!-- UNCOMMENT THIS
-      <div class="blPatList">
+      <!--<div class="blPatList"> UNCOMMENT THIS 
         
         <ol id="blPat-list"></ol>
 

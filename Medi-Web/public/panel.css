@@ -13,6 +13,27 @@
 
 }
 
+.patList ol li {
+  border: 1px solid rgb(201, 201, 201);
+  margin-top: 2%;
+  padding: 5%;
+}
+
+#msg-list {
+  background: #fff;
+  max-width: 960px;
+  padding: 20px 30px;
+  border: 1px solid rgb(201, 201, 201);
+  margin: auto;
+}
+
+#msg-list ol li {
+  border: 1px solid rgb(201, 201, 201);
+  margin-top: 2%;
+  margin-bottom: 25%;
+  padding: 5%;
+}
+
 
 #tabbedView{
   max-width: 80%;

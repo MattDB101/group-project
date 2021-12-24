@@ -21,8 +21,10 @@ roleSpan = document.createElement("span")
 phoneSpan = document.createElement("span")
 addressSpan = document.createElement("span")
 const patList = document.querySelector('#pat-list');
-const queryRes = document.querySelector('#queryRes');
+const msgList = document.querySelector('#msg-list');
 
+const queryRes = document.querySelector('#queryRes');
+var msgCount = 0
 const patients = []
 
 firebase.auth().onAuthStateChanged(user => {
@@ -119,14 +121,67 @@ function update(user) {
             })
         });
     });
+
+
+    db.collection("contacts").where("recipient", "==", user.email).get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+            msgCount++
+            let li = document.createElement('li');
+            let head = document.createElement('span');
+            head.style.display = "block"
+            let date = document.createElement('span');
+            date.style.display = "block"
+            let text = document.createElement('span');
+            text.style.display = "block"
+
+            li.setAttribute('data-id', doc.id);
+
+            head.textContent = doc.data().title;
+            text.textContent = doc.data().description;
+            date.textContent = doc.data().date;
+            head.style.fontWeight = "bold";
+
+            li.appendChild(head);
+            li.appendChild(text);
+            li.appendChild(date);
+
+            newlink = document.createElement('a');
+            newlink.innerHTML = 'Delete';
+            newlink.setAttribute('title', 'Delete');
+            newlink.setAttribute('href', 'javascript:void(0)');
+            li.appendChild(newlink);
+
+            li.style.border = "1px solid rgb(201, 201, 201)";
+            li.style.marginTop = "2%";
+            li.style.marginBottom = "2%";
+            li.style.padding = "5%";
+            msgList.appendChild(li);
+            if (msgCount == 1) {
+                document.getElementById("messageHeading").innerHTML = "You have " + msgCount + " message"
+            } else {
+                document.getElementById("messageHeading").innerHTML = "You have " + msgCount + " messages."
+            }
+
+
+            // deleteing data
+            newlink.addEventListener("click", (e) => {
+                e.stopPropagation()
+                let id = e.target.parentElement.getAttribute("data-id")
+                console.log(id)
+                db.collection('contacts').doc(id).delete();
+                location.reload()
+            })
+
+        });
+    });
 }
 
 function getAIres(patEmail) {
     const {
         currentUser
     } = firebase.auth();
-    var age, asf, cdr, educ, etiv, group, hand, mF, mmse, mrDelay, nwbv, ses, visit, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, heartTarget, diabetesTarget, thal, thalach, trestbps
-    age = asf = cdr = educ = etiv = group = hand = mF = mmse = mrDelay = nwbv = ses = visit = bloodpressure = bmi = dbf = glucose = insulin = pregnancies = skinthickness = ca = chol = cp = exang = fbs = oldpeak = restecg = sex = slope = heartTarget = diabetesTarget = thal = thalach = trestbps = "Not Enough Data.";
+    var age, asf, cdr, educ, etiv, mF, mmse, nwbv, ses, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, heartTarget, diabetesTarget, thal, thalach, trestbps
+    age = asf = cdr = educ = etiv = mF = mmse = nwbv = ses = bloodpressure = bmi = dbf = glucose = insulin = pregnancies = skinthickness = ca = chol = cp = exang = fbs = oldpeak = restecg = sex = slope = heartTarget = diabetesTarget = thal = thalach = trestbps = "Not Enough Data.";
     db.collection('patient').doc(patEmail).collection('diseases').get().then(snapshot => {
         snapshot.docs.forEach(doc => {
             if (doc.id == "alzheimers") { // alzheimers
@@ -135,14 +190,11 @@ function getAIres(patEmail) {
                 cdr = doc.data().cdr;
                 educ = doc.data().educ;
                 etiv = doc.data().etiv;
-                group = doc.data().group;
-                hand = doc.data().hand;
                 mF = doc.data().mF;
                 mmse = doc.data().mmse;
-                mrDelay = doc.data().mrDelay;
                 nwbv = doc.data().nwbv;
                 ses = doc.data().ses;
-                visit = doc.data().visit;
+
 
             }
 
@@ -179,7 +231,7 @@ function getAIres(patEmail) {
             }
         })
     }).then(() => {
-        alzheimers = "Alzheimers : " + group;
+        alzheimers = "Alzheimers : " + asf;
 
         switch (diabetesTarget) {
             case 0:
@@ -275,9 +327,9 @@ document.getElementById("alzheimersForm").addEventListener("submit", (event) => 
                             var ageBool = (patAge > formAge && patAge < formAge + 19)
                         }
 
-                        if (ageBool && (patSex == formSex) && (patCdr <= formCdr) && (patEtiv >= formEtiv) && patTarget == "Demented") {
+                        if (ageBool && (patSex == formSex) && (patCdr <= formCdr) && (patEtiv >= formEtiv) && patTarget == "1") {
                             illpats++
-                        
+
                         }
                     }
                 })
@@ -339,7 +391,7 @@ document.getElementById("diabetesForm").addEventListener("submit", (event) => {
                         console.log(ageBool)
                         if (ageBool & (patBp <= formBp) && (patGlucose <= formGlucose) && (patBmi <= formBmi) && patTarget == 1) {
                             illpats++
-                            
+
                         }
                     }
                 })
@@ -391,10 +443,10 @@ document.getElementById("heartForm").addEventListener("submit", (event) => {
                         } else {
                             var ageBool = (patAge > formAge && patAge < formAge + 19)
                         }
-                        
+
                         if (ageBool && (patSex == formSex) && (patCholestrol <= formCholestrol) && (patBp <= formBp) && patTarget == 1) {
                             illpats++
-                            
+
                         }
                     }
                 })
@@ -475,21 +527,18 @@ document.getElementById("addPatient").addEventListener("submit", (event) => {
             }
             db.collection('patient').doc(patEmail).collection('diseases').get().then(snapshot => {
                 snapshot.docs.forEach(doc => {
-                    if (doc.id == "alzheimers") { // alzheimers when its added
+                    if (doc.id == "alzheimers") {
                         (db.collection('doctors').doc(currentUser.email).collection('patients').doc(patEmail).collection("diseases").doc("alzheimers").set({
                             age: doc.data().age,
                             asf: doc.data().asf,
                             cdr: doc.data().cdr,
                             educ: doc.data().educ,
                             etiv: doc.data().etiv,
-                            group: doc.data().group,
-                            hand: doc.data().hand,
                             mF: doc.data().mF,
                             mmse: doc.data().mmse,
-                            mrDelay: doc.data().mrDelay,
                             nwbv: doc.data().nwbv,
                             ses: doc.data().ses,
-                            visit: doc.data().visit,
+
                         }))
 
                     }
@@ -543,7 +592,7 @@ document.getElementById("addPatient").addEventListener("submit", (event) => {
             console.log(wallet)
 
             App.createPatient(name, addr, email, tel, wallet);
-            //location.reload()
+            location.reload()
         }).catch(err => {
             var errMsg = document.getElementById("error");
             errMsg.innerHTML = "Email not linked to a user.";
@@ -582,8 +631,8 @@ function exportCSV() {
     }).then(() => {
         for (let i = 0; i < arrofArr.length; i++) {
             db.collection('doctors').doc(currentUser.email).collection('patients').doc(arrofArr[i][3]).collection('diseases').get().then(snapshot => {
-                var age, asf, cdr, educ, etiv, group, hand, mF, mmse, mrDelay, nwbv, ses, visit, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, target, thal, thalach, trestbps
-                age = asf = cdr = educ = etiv = group = hand = mF = mmse = mrDelay = nwbv = ses = visit = bloodpressure = bmi = dbf = glucose = insulin = pregnancies = skinthickness = ca = chol = cp = exang = fbs = oldpeak = restecg = sex = slope = target = thal = thalach = trestbps = "Not Given";
+                var age, asf, cdr, educ, etiv, mF, mmse, nwbv, ses, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, target, thal, thalach, trestbps
+                age = asf = cdr = educ = etiv = mF = mmse = nwbv = ses = bloodpressure = bmi = dbf = glucose = insulin = pregnancies = skinthickness = ca = chol = cp = exang = fbs = oldpeak = restecg = sex = slope = target = thal = thalach = trestbps = "Not Given";
                 snapshot.docs.forEach(doc => {
                     if (doc.id == "alzheimers") { // alzheimers
                         age = doc.data().age;
@@ -591,14 +640,11 @@ function exportCSV() {
                         cdr = doc.data().cdr;
                         educ = doc.data().educ;
                         etiv = doc.data().etiv;
-                        group = doc.data().group;
-                        hand = doc.data().hand;
                         mF = doc.data().mF;
                         mmse = doc.data().mmse;
-                        mrDelay = doc.data().mrDelay;
                         nwbv = doc.data().nwbv;
                         ses = doc.data().ses;
-                        visit = doc.data().visit;
+
 
                     }
 
@@ -634,7 +680,7 @@ function exportCSV() {
 
                     }
                 })
-                arrofArr[i].push(age, asf, cdr, educ, etiv, group, hand, mF, mmse, mrDelay, nwbv, ses, visit, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, target, thal, thalach, trestbps)
+                arrofArr[i].push(age, asf, cdr, educ, etiv, mF, mmse, nwbv, ses, bloodpressure, bmi, dbf, glucose, insulin, pregnancies, skinthickness, ca, chol, cp, exang, fbs, oldpeak, restecg, sex, slope, target, thal, thalach, trestbps)
             });
         }
 

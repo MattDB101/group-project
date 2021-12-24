@@ -1,5 +1,7 @@
+const testnet = "https://kovan.infura.io/v3/9c053fbfe817400cb60836f3947cc60f"
 
-web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+web3 = new Web3(new Web3.providers.HttpProvider(testnet));
+
 
 App = {
     loading: false,
